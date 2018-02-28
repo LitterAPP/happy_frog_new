@@ -680,7 +680,7 @@ Page({
   onShareAppMessage: function () {
     var that = this
     return {
-      title: '[@我]' + that.data.book.bookName,
+      title: '我在小青蛙朗诵了《' + that.data.book.bookName+'》,快来听听吧~',
       path: '/pages/index/index?shareUserId=' + that.data.userId + '&bookId=' + that.data.book.id,
       success: function (res) {
         // 转发成功

@@ -3,10 +3,8 @@
     "pages/list/list",
     "pages/index/index",
     "pages/color/color",
-    "pages/create/create",
-    "pages/activity/list",
-    "pages/tmp/index",
-    "pages/activity/rank"
+    "pages/create/create", 
+    "pages/tmp/index"
   ],
   "subPackages": [
     {
@@ -15,6 +13,13 @@
         "pages/bainian/detail",
         "pages/bainian/index",
         "pages/bainian/mylist"
+      ]
+    },
+    {
+      "root": "activity",
+      "pages": [
+        "list",
+        "rank"
       ]
     }
   ], 

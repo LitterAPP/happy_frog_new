@@ -64,10 +64,10 @@
     </form>
   </view>
   <view class='button-list-reflush'>
-    <form report-submit bindsubmit='showActivity'>
+    <form report-submit bindsubmit='goActivity'>
       <view class='wrap-button'>
-        <image style='height:25px;width:25px;' src='/images/gift_icon.png'></image>
-        <text style='margin-top:0px;'>参加比赛</text>
+        <image style='height:25px;width:25px;' src='/images/jb_jin.png'></image>
+        <text style='margin-top:0px;'>参赛</text>
         <button form-type='submit'></button>
       </view>
     </form>

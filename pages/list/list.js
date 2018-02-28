@@ -9,7 +9,7 @@ var H
 var ItemW
 var startX, startY, endX, endY
 var reflushUrl = app.globalData.host + '/Forg/listHotBooks'
-var jx=0, hotOrLast=0
+var jx = 1, hotOrLast = 0
 
 var moveSprites = ['/images/forg-7.png', '/images/forg-5.png', '/images/gift-1.png', '/images/gift-2.png', '/images/gift-3.png', '/images/gift-4.png', '/images/gift-5.png', '/images/gift-6.png', '/images/gift-7.png', '/images/gift-8.png', '/images/gift-9.png', '/images/gift-10.png', '/images/gift-11.png', '/images/huaban-1.png', '/images/huaban-2.png']
 
@@ -21,10 +21,11 @@ Page({
    */
   data: {
     hot: 1,
-    borderColor: '#E6399B'
-     
+    borderColor: '#E6399B',
+    jx:1
+
   },
-  goBainian:function(e){
+  goBainian: function (e) {
     var that = this
     util.GET(app.globalData.host + '/FormId/collect',
       {
@@ -32,10 +33,26 @@ Page({
         appId: app.globalData.appid,
         formId: e.detail.formId
       }, function () {
-          wx.navigateTo({
-            url: '/wish/pages/bainian/index',
-          })
+
       })
+
+    wx.navigateTo({
+      url: '/wish/pages/bainian/index',
+    })
+  },
+  goActivity: function (e) {
+    var that = this
+    util.GET(app.globalData.host + '/FormId/collect',
+      {
+        session: wx.getStorageSync('session'),
+        appId: app.globalData.appid,
+        formId: e.detail.formId
+      }, function () {
+
+      })
+    wx.navigateTo({
+      url: '/activity/list',
+    })
   },
   goCreate: function (e) {
     util.GET(app.globalData.host + '/FormId/collect',
@@ -49,9 +66,9 @@ Page({
         })
       })
   },
-  jxSelected:function(e){
+  jxSelected: function (e) {
     var that = this
-    jx = e.currentTarget.dataset.jx 
+    jx = e.currentTarget.dataset.jx
     that.setData({ jx: jx })
     that.reflush()
     util.GET(app.globalData.host + '/FormId/collect',
@@ -62,10 +79,10 @@ Page({
       }, function () {
       })
   },
-  hotOrLast:function(e){
+  hotOrLast: function (e) {
     var that = this
     hotOrLast = e.currentTarget.dataset.hot
-    that.setData({ hot: hotOrLast})
+    that.setData({ hot: hotOrLast })
     that.reflush()
     util.GET(app.globalData.host + '/FormId/collect',
       {
@@ -76,12 +93,12 @@ Page({
       })
   },
   reflush: function () {
-    var that = this   
+    var that = this
     util.showToast('加载中...', 'info')
     util.GET(app.globalData.host + '/Forg/listBooks',
       {
         session: wx.getStorageSync('session'),
-        jx:jx,
+        jx: jx,
         hotOrLast: hotOrLast,
         page: page,
         pageSize: pageSize
@@ -115,7 +132,7 @@ Page({
         }
       })
   },
-  stopMusic:function(){
+  stopMusic: function () {
     backgroundMusic.stopMusic()
   },
   playMusic: function () {
@@ -129,18 +146,20 @@ Page({
 
     W = wx.getSystemInfoSync().windowWidth
     H = wx.getSystemInfoSync().windowHeight
-    ItemW = W - 100 
+    ItemW = W - 100
 
     util.GET(app.globalData.host + '/ForgNewYear/isOpen',
-      { 
+      {
       }, function (res) {
-          if(res && res.code == 1){
-            that.setData({ForgNewYear:res.data})
-          }
+        if (res && res.code == 1) {
+          that.setData({ ForgNewYear: res.data })
+        }
       })
 
     util.checkLogin(false, function () {
       util.showToast('加载中...', 'info')
+      that.reflush()
+      /*
       util.GET(app.globalData.host + '/Forg/listHotBooks',
         {
           session: wx.getStorageSync('session'),
@@ -174,33 +193,14 @@ Page({
                 pageshow: true
               })
           }
-        })
-
-      util.GET(app.globalData.host + '/Forg/getActivity',
-        { session: wx.getStorageSync('session') },
-        function (res) {
-          if (res && res.code == 1 && res.data) {
-            var key = res.data.id + '_activity'
-            var preShowTime = wx.getStorageSync(key)
-            var currentTime = Date.parse(new Date()) / 1000;
-            if (!preShowTime || (currentTime - preShowTime) >= 1 * 24 * 60 * 60) {
-              that.setData({ activity: res.data, showActivity: true })
-              wx.setStorage({
-                key: key,
-                data: currentTime,
-              })
-            } else {
-              that.setData({ activity: res.data, showActivity: false })
-            }
-          }
-        })
+        })*/
     })
   },
   linsternAudioEvent: function () {
     var that = this
-    backgroundMusic.listener(function (music){
+    backgroundMusic.listener(function (music) {
       that.setData({ music: music })
-    }) 
+    })
   },
   selectedMusic: function (e) {
     var that = this
@@ -215,7 +215,7 @@ Page({
     startY = e.changedTouches[0].pageY
     console.log('moveItemStart-->', startX, startY)
   },
-  movingItem:function(e){
+  movingItem: function (e) {
     if (!e || !e.changedTouches) return
     endX = e.changedTouches[0].pageX
     endY = e.changedTouches[0].pageY
@@ -223,7 +223,7 @@ Page({
     let absX = Math.abs(endX - startX)
     let absY = Math.abs(endY - startY)
     let offset = Math.sqrt(absX * absX + absY * absY)
-    if (offset < 20) { 
+    if (offset < 20) {
       return
     }
     //判断运动方向8个方向
@@ -307,7 +307,7 @@ Page({
         url: '/pages/index/index?bookId=' + bookId,
       })
       return
-    } 
+    }
   },
 
   /**
@@ -323,7 +323,7 @@ Page({
       that.setData({ music: music })
       that.soundScale()
       that.linsternAudioEvent()
-      backgroundMusic.autoPlayMusic() 
+      backgroundMusic.autoPlayMusic()
     })
 
   },
@@ -390,7 +390,7 @@ Page({
       }
       count++
     }, 600)
-    soundScale2 =  setInterval(function () {
+    soundScale2 = setInterval(function () {
       if (count % 2 == 0) {
         that.setData({ musicSoundScaleY2: Math.floor(Math.random() * 5 + 1) + 1 })
       } else {

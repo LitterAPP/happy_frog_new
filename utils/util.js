@@ -120,7 +120,7 @@ function GET(url, data, callback) {
     title: '请稍后...',
     mask: true
   })*/
-  wx.showNavigationBarLoading()
+  //wx.showNavigationBarLoading()
   wx.request({
     url: url,
     dataType: 'json',
@@ -131,7 +131,7 @@ function GET(url, data, callback) {
     },
     complete: function (res) {
       console.log('GET', url, data, res)
-      wx.hideNavigationBarLoading()
+      //wx.hideNavigationBarLoading()
       if (res && res.statusCode == 200 && res.data) {
         typeof callback == "function" && callback(res.data);
       } else {

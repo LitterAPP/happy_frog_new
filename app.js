@@ -11,8 +11,8 @@ App({
   innerAudioContext: wx.createInnerAudioContext(),
   globalData: {     
     appid: 'wx415d725aa7a75c7e',
-    host: 'http://192.168.0.184:9020'
-    //host: 'https://91loving.cn/proxy/cook'
+    //host: 'http://192.168.0.184:9020'
+    host: 'https://91loving.cn/proxy/cook'
   }
 })
 /**

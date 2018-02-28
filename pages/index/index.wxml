@@ -50,7 +50,7 @@
         <view class='avatar-item' style='margin-left:-15px;'>
           <image class='playImg' src='{{selfRecord.avatar}}'></image>
         </view>
-        <view class='avatar-item' style='margin-left:-10px;top:30px;margin-top:-15px;opacity: 0.3;'>
+        <view class='avatar-item' style='margin-left:-10px;top:30px;margin-top:-15px;opacity: 0.8;'>
           <image  style='height:20px;width:20px;' wx:if='{{currentVoice == selfRecord.id}}' class='playImg' catchtap='stopVoice' data-idx='{{selfRecord.id}}' src='/images/voice-stop.png'></image>
           <image style='height:20px;width:20px;' wx:else class='playImg' catchtap='playVoice' data-recordurl='{{selfRecord.recordUrl}}' data-idx='{{selfRecord.id}}' src='/images/voice-play.png'></image>
         </view>
@@ -92,7 +92,7 @@
         <view class='avatar-item' style='margin-left:-15px;'>
           <image class='playImg' src='{{item.avatar}}'></image>
         </view> 
-         <view class='avatar-item' style='margin-left:-10px;top:30px;margin-top:-15px;opacity: 0.3;'>
+         <view class='avatar-item' style='margin-left:-10px;top:30px;margin-top:-15px;opacity: 0.8;'>
           <image  style='height:20px;width:20px;' wx:if='{{currentVoice == item.id}}' class='playImg' catchtap='stopVoice' data-idx='{{item.id}}' src='/images/voice-stop.png'></image>
           <image style='height:20px;width:20px;' wx:else class='playImg' catchtap='playVoice' data-recordurl='{{item.recordUrl}}' data-idx='{{item.id}}' src='/images/voice-play.png'></image>
         </view>
