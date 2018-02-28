@@ -1,0 +1,35 @@
+<scroll-view scroll-x='{{true}}' class='record' style='width:100%;height:{{scrollHeight-35}}px;'>
+  <view class='item' wx:for='{{templates}}' wx:key='{{id}}'>
+    <text class='nickName'>我是{{userinfo.nickName}}</text>
+    <text class='desc1'>祝您元宵节快乐!</text>
+    <text class='desc2'>请收听我的元宵祝福吧~</text>
+    <image class='avatar' style='width:40px;height:40px;border-radius: 50%;' src='{{userinfo.avatarUrl}}'></image>
+    <image class='bgimg' style='width:{{itemW}}px;height:{{(itemW)*1.8}}px;' src='{{item.url}}'></image>
+    <text catchtap='recordEnd' class='recordBtn' data-id='{{item.id}}' wx:if='{{templateId == item.id}}'>{{recordBtnText}}</text>
+    <text catchtap='recordStart'  class='recordBtn' data-id='{{item.id}}' wx:else >点击说祝福</text>
+  </view> 
+</scroll-view>
+<view>
+  <form  report-submit bindsubmit='myBainianBang'>
+    <button form-type='submit' class='myBainianBtn'>我的祝福榜</button>
+  </form>
+</view>
+
+<!--
+<view class='bgmusic' style='left: 5px;'>
+   <image wx:if='{{playingBgMusic}}' catchtap='stopBgMusic' src='/images/music.png'></image>
+   <image wx:else catchtap='playBgMusic' src='/images/music-0.png'></image>
+</view>
+-->
+
+<view class='bgmusic' style='right:5px;'>
+ <form report-submit bindsubmit='goHome'>
+      <view class='wrap-button' style='height:30px;width:30px;'>
+        <image style='height:20px;width:20px;' src='/images/home.png'></image>
+        <button style='height:30px;width:30px;' form-type='submit'></button>
+      </view>
+    </form>
+</view>
+
+
+ 

@@ -1,0 +1,31 @@
+{
+  "pages": [
+    "pages/list/list",
+    "pages/index/index",
+    "pages/color/color",
+    "pages/create/create",
+    "pages/activity/list",
+    "pages/tmp/index",
+    "pages/activity/rank"
+  ],
+  "subPackages": [
+    {
+      "root": "wish",
+      "pages": [
+        "pages/bainian/detail",
+        "pages/bainian/index",
+        "pages/bainian/mylist"
+      ]
+    }
+  ], 
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTitleText": "小青蛙",
+    "navigationBarTextStyle": "black"
+  },
+  "networkTimeout": {
+    "request": 60000,
+    "downloadFile": 10000
+  }
+}

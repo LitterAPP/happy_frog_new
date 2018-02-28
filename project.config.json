@@ -1,0 +1,63 @@
+{
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "1.9.91",
+	"appid": "wx415d725aa7a75c7e",
+	"projectname": "happy-forg-e",
+	"isGameTourist": false,
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 3,
+			"list": [
+				{
+					"id": -1,
+					"name": "fromOtherApp",
+					"pathName": "pages/list/list",
+					"query": "",
+					"scene": "1038",
+					"referrerInfo": {
+						"appId": "wxecaa3ad929e8dfd1",
+						"extraData": "{\"session\":\"c0618eff-eeae-4ff9-af9f-5558b847f1bc\"}"
+					}
+				},
+				{
+					"id": -1,
+					"name": "赛事列表",
+					"pathName": "pages/activity/list",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "rank",
+					"pathName": "pages/activity/rank",
+					"query": "actId=1"
+				},
+				{
+					"id": -1,
+					"name": "wish",
+					"pathName": "wish/pages/bainian/index",
+					"query": ""
+				}
+			]
+		}
+	}
+}
