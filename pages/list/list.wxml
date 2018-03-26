@@ -1,25 +1,49 @@
+<view class='top'>
+  <text class='top-title'>小青蛙推荐</text>
+</view>
 <view wx:if='{{pageshow}}' class='container' style='width:{{W}}px;height:{{H}}px;'>
-  <block wx:if='{{nothing}}'>
-    <view class='nonthing'>
-      <image catchtap='reflush' src='/images/forg-2.png' style='width:120px;height:100px;'></image>
-      <text style='font-size:14px;color:#666;'>没有了</text>
-    </view>
-  </block>
   <block wx:for='{{list}}' wx:key='id'>
-    <view style=' border:1px solid #ccc;width:{{ItemW}}px;height:{{ItemW+30}}px;transition:transform 1000ms ease 0ms;transform:translate({{item.X}}px, {{item.Y}}px) rotate({{item.DEG}}deg);transform-origin:35% 60% 0px;' class='list-item' data-bookid='{{item.id}}'
-      data-idx='{{index}}' catchtouchstart='moveItemStart' catchtouchend='moveItemEnd' catchtouchmove='movingItem'>
-      <image mode='aspectFit' style='width:{{ItemW}}px;height:{{ItemW}}px;' src='{{item.bookCover}}'></image>
+    <view style='z-index:{{item.zindex}}; border:1px solid #ccc;width:{{ItemW}}px;height:{{ItemW+30}}px;transition:transform 1000ms ease 0ms;transform:translate({{item.X}}px, {{item.Y}}px) rotate({{item.DEG}}deg);transform-origin:35% 60% 0px;' class='list-item'
+      data-bookid='{{item.id}}' data-idx='{{index}}' catchtouchstart='moveItemStart' catchtouchend='movingItem'>
+      <image mode='aspectFit' data-bookid='{{item.id}}' style='width:{{ItemW}}px;height:{{ItemW}}px;' src='{{item.bookCover}}'></image>
       <text class='bookName' style='width:{{ItemW-9}}px;'>{{item.bookName}}</text>
       <text class='updateTime'>{{item.createDate}}</text>
-      <image style='width:30px;height:30px;position: absolute; top: 5px; left: 5px;' wx:if='{{item.recommed == 1}}' src='/images/jx-1.png'></image>
-      <view class='flowNumber'>
-        <image src='/images/gift-2.png'></image>
-        <text>{{item.flows}}</text>
+      <view class='recordNumber' wx:if='{{isApproved}}'>
+        <image style='width:30px;height:30px;' src='/images/record-0.png'></image>
+        <text>{{item.recordNumber}}</text>
       </view>
+      <!--
+        <image style='width:30px;height:30px;position: absolute; top: 5px; left: 5px;' wx:if='{{item.recommed == 1}}' src='/images/jx-1.png'></image>
+        -->
+      <!--
+        <view class='flowNumber'>
+          <image src='/images/gift-2.png'></image>
+          <text>{{item.flows}}</text>
+        </view>
+        -->
     </view>
   </block>
+  <view wx:if='{{isApproved}}'  style='display:flex;flex-direction:row;justify-content: center;align-content: center;align-items: center;width:{{W-20}}px;position:absolute;left:0px;bottom:5px;'>
+    <fbutton formType='submit' buttonText='我也要朗读' bind:fbutton-tap='goToRead' extStyle='width:140px;height:30px;line-height:30px;' />
+  </view>
+  <view wx:if='{{isApproved && otherRecords && otherRecords.length>0}}' class='top3' style='width:{{W-20}}px;position:absolute;left:0px;top:{{ItemW+160}}px;'>
+    <view wx:for='{{otherRecords}}' wx:key='{{id}}' data-idx='{{index}}' class='top3-item' hover-class='top3-item-hover' catchtap='rankItemClick' class='top3-item' hover-class='top3-item-hover' style='height:105px;width:{{(W-3)/(otherRecords.length)}}px;'>
+      <image src='{{item.avatar}}'></image>
+      <text>{{item.nickName}}</text>
+      <view class='top3-item-1'>
+        <view class='top3-item-1-1'>
+          <image src='/images/zan-0.png'></image>
+          <text>{{item.flows}}</text>
+        </view>
+        <view class='top3-item-1-1' style='margin-left:5px;'>
+          <image src='/images/listen-0.png'></image>
+          <text>{{item.playTimes}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!--
   <view class='button-list'>
-
     <form wx:if='{{hot==1}}' data-hot='0' report-submit bindsubmit='hotOrLast'>
       <view class='wrap-button'>
         <image style='height:30px;width:30px;' src='/images/new.png'></image>
@@ -51,11 +75,9 @@
         <button form-type='submit'></button>
       </view>
     </form>
-
-  </view>
-  <view wx:if='{{ForgNewYear}}' class='button-list-reflush' style='right: 60px;'>
-    <!--<image catchtap='showActivity' src='/images/gift_icon.png'></image>-->
-    <form  report-submit bindsubmit='goBainian'>
+  </view> 
+  <view wx:if='{{ForgNewYear && isApproved}}' class='button-list-reflush' style='right: 60px;'> 
+    <form report-submit  bindsubmit='goBainian'>
       <view class='wrap-button'>
         <image style='height:25px;width:25px;' src='/images/happy-newyear-icon.png'></image>
         <text style='margin-top:0px;'>闹元宵</text>
@@ -63,7 +85,7 @@
       </view>
     </form>
   </view>
-  <view class='button-list-reflush'>
+  <view class='button-list-reflush' wx:if='{{isApproved}}'>
     <form report-submit bindsubmit='goActivity'>
       <view class='wrap-button'>
         <image style='height:25px;width:25px;' src='/images/jb_jin.png'></image>
@@ -72,16 +94,16 @@
       </view>
     </form>
   </view>
-  <view class='button-create'>
+  <view class='button-create' wx:if='{{isApproved}}'>
     <form bindsubmit='goCreate' report-submit>
       <view class='wrap-button'>
         <image src='/images/create.png'></image>
-        <text>去创作读本吧</text>
+        <text>上传读本</text>
         <button form-type='submit'></button>
       </view>
     </form>
-  </view>
-
+  </view> -->
+  <!---
   <view class='button-play-music'>
     <image wx:if='{{music.play}}' catchtap='stopMusic' src='/images/playing.png'></image>
     <image wx:else catchtap='playMusic' src='/images/play.png'></image>
@@ -98,7 +120,8 @@
       <text wx:if='{{music.replay}}' style='position: absolute;right:30px;top:10px;'>加载中...</text>
       <autocompleteadv wx:if='{{music && music.musicsList && music.musicsList.length > 0 }}' required style='width:{{W-40}}px;' bind:item-selected='selectedMusic' selectedId='{{music.selectedId}}' type='static' source='{{music.musicsList}}'></autocompleteadv>
     </view>
-  </view>
+  </view>-->
+
   <!--
     <view class='huanbian' animation='{{flowSlowMoveData1}}' style='top:-50px;left:0px;'>
     <image mode='widthFix' style='width:30px;' src='{{sprite1}}'></image>
@@ -135,4 +158,11 @@
   <view class='huanbian' animation='{{recodTimeDownAnimationData}}' style='left:50%;top:50%;opacity:0;z-index:-2;'>
     <text style='color:#FF4F00;'>{{time}}</text>
   </view>
-</view> 
+</view>
+
+<view class='myspace' wx:if='{{isApproved}}' catchtap='goToMySpace'>
+  <image src='{{userinfo.avatarUrl}}'></image> 
+</view>
+<text style='position: absolute;top: 85px;left: 5px;'  catchtap='goCreate' wx:if='{{userinfo.id==1789}}'>创建读本</text> 
+
+  

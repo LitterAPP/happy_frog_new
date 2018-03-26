@@ -1,0 +1,44 @@
+.page{
+ 
+}
+.scroll-item{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 5px;
+  background: #fff;
+  padding: 5px;
+}
+
+.scroll-item image{
+  height: 30px;
+  width: 30px;
+}
+
+.wrap-swiper-item{
+  position: relative;
+}
+.wrap-swiper-item text{
+  position: absolute;
+  bottom: 5px;
+  right: 5px; 
+  background: rgba(255,255,255,0.3);
+  color:#000;
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 13px;
+}
+
+.scroll-item-1{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: flex-end; 
+}
+.scroll-item-1 text{
+  font-size: 12px;
+  color: #bfbfbf;
+}

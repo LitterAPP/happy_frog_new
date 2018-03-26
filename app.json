@@ -3,8 +3,20 @@
     "pages/list/list",
     "pages/index/index",
     "pages/color/color",
-    "pages/create/create", 
-    "pages/tmp/index"
+    "pages/create/create",
+    "pages/tmp/index",
+    "pages/read/read",
+    "pages/read/view",
+    "pages/myspace/index",
+    "pages/myspace/setting",
+    "pages/myspace/follower",
+    "pages/myspace/booklist",
+    "pages/activity/list",
+    "pages/activity/rank",
+    "pages/myspace/totalrank",
+    "pages/myspace/followed",
+    "pages/myspace/suggest",
+    "pages/myspace/suggestlist"
   ],
   "subPackages": [
     {
@@ -14,20 +26,14 @@
         "pages/bainian/index",
         "pages/bainian/mylist"
       ]
-    },
-    {
-      "root": "activity",
-      "pages": [
-        "list",
-        "rank"
-      ]
     }
-  ], 
+  ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#FFFFFF",
     "navigationBarTitleText": "小青蛙",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom"
   },
   "networkTimeout": {
     "request": 60000,

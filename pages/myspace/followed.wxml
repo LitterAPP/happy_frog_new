@@ -1,0 +1,27 @@
+<!--pages/myspace/follower.wxml-->
+<view class='topPlaceHolder'>
+</view>
+
+<scroll-view scroll-y style="height: {{H-80}};">
+  <view class='scroll-item' wx:for='{{list}}' wx:key='{{id}}'>
+    <view class='scroll-item-1' data-userid='{{item.userId}}'  catchtap='goToBookList' data-flag='4'>
+      <image src='{{item.avatar}}'></image>
+      <view class='scroll-item-1-1' style='width:{{W-140}}px;'>
+        <text>{{item.nickName}}</text>
+        <text style='font-size:14px;color:#666;'>{{item.followTime}}</text>
+      </view>
+    </view>
+     <fbutton data-readid='{{item.readId}}' data-userid='{{item.userId}}'  data-bookid='{{item.id}}' extStyle='margin-left:5px;height:25px;line-height:25px;width:45px;border-radius:5px;'  buttonText='查看Ta'  bind:fbutton-tap='goToBookList' data-flag='4' formType='submit' />   
+  </view>
+  <view class='nomoredata'>
+    <fbutton wx:if='{{!nomore && !loading && !nodatas}}' extStyle='background:rgba(0,0,0,0);color:#888;width:200px;' bind:fbutton-tap='moreListData' formType='submit' buttonText='点击查看更多' />
+    <text wx:if='{{loading}}'>加载中...</text>
+    <text wx:if='{{nomore}}'>没有更多了</text>
+    <text wx:if='{{nodatas}}'>您还没有关注的人，彼此关注才能获取更多快乐~</text>
+  </view>
+</scroll-view>
+
+<view class='top'>
+  <fbutton extImgStyle='height:25px;width:25px;' extStyle='width:30px;' adv='true' formType='submit' buttonImage='/images/back.png' buttonText='' bind:fbutton-tap='goBack' />
+  <text class='top-title'>我关注的</text>
+</view>

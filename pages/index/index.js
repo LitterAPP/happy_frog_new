@@ -2,8 +2,7 @@ import Upload from '../../utils/upload.js'
 const util = require('../../utils/util.js')
 const backgroundMusic = require('../../utils/backgroundMusic.js')
 const app = getApp()
-const playVoice = wx.createInnerAudioContext()
-playVoice.autoplay = true
+var playVoice 
 const recorderManager = wx.getRecorderManager()
 var recording = false, forgOuting = false, playVoiceing = false
 var tmpMp3
@@ -16,6 +15,7 @@ var W
 var H
 var ItemW
 var startX, startY, endX, endY
+var page = 1, pageSize = 5, byLast=0
 
 const recordOptions = {
   duration: 600000,
@@ -35,25 +35,151 @@ Page({
 
     ],
     currentVoice: -1,
-    card:1
+    card: 1,
+    tipShow:true,
+    nodatas:false
+  },
+  rankItemClick:function(e){
+    var that = this
+    let index = e.currentTarget.dataset.idx
+    let selectedItem = that.data.otherRecords[index]
+    if ( !selectedItem ) return     
+    if (selectedItem.recordUrl){
+      that.setData({ currentVoice: selectedItem.id })
+      playVoice.src = selectedItem.recordUrl
+      return 
+    }
+    wx.navigateTo({
+      url: '/pages/read/view?readId=' + selectedItem.id,
+    })
+  },
+  testFbutton: function (e) {
+    console.log('testFbutton-->', e.detail)
+  },
+  collectBook:function(e){
+    var that = this
+    util.GET(app.globalData.host + '/FormId/collect',
+      {
+        session: wx.getStorageSync('session'),
+        appId: app.globalData.appid,
+        formId: e.detail.formId
+      }, function () { })
+    util.GET(app.globalData.host + '/Forg/collect',{
+      session:wx.getStorageSync('session'),
+      bookId:that.data.book.id
+    },function(res){
+        if(res && res.code == 1){
+          that.setData({collectStatus:res.data})
+        }
+    })
+  },
+  goToRead: function (e) {
+    var that = this
+    util.GET(app.globalData.host + '/FormId/collect',
+      {
+        session: wx.getStorageSync('session'),
+        appId: app.globalData.appid,
+        formId: e.detail.formId
+      }, function () { })
+
+    wx.navigateTo({
+      url: '/pages/read/read?bookId='+e.currentTarget.dataset.bookid
+    })
   },
 
+  hideOrShow:function(){
+    var that = this
+    var tipShow = that.data.tipShow
+    console.log('hideOrShow', tipShow)
+    that.setData({ tipShow: !tipShow})
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     var that = this
-
     W = wx.getSystemInfoSync().windowWidth
-    H = wx.getSystemInfoSync().windowHeight
-    ItemW = W - 50
+    H = wx.getSystemInfoSync().screenHeight
+    ItemW = 2*W / 3
     that.shareUserId = options.shareUserId || 0
     that.bookId = options.bookId || 0
     that.setData({ W: W, H: H, ItemW: ItemW, ItemH: Math.sqrt(ItemW * ItemW + ItemW * ItemW), scrollHeight: H - W })
-    util.showToast('加载中...', 'info') 
+
+    util.isApproved(function (isApproved) {
+      that.setData({ isApproved: isApproved })
+    })
+    that.soundScale()
+    util.checkLogin(false, function () {
+      util.GET(app.globalData.host + '/Forg/getBook',
+        {
+          session: wx.getStorageSync('session'),
+          bookId: that.bookId,
+          record: true,
+          shareUserId: that.shareUserId
+        },
+        function (res) {
+          if (res && res.code == 1) {
+            let shots = res.data.shots
+            for (let i in shots) {
+              shots[i]['X'] = 0;
+              shots[i]['Y'] = 10;
+              let deg = (i - 3) * 2 * -1;
+              if (deg > 10) {
+                deg = 10
+              }
+              if (deg < -10) {
+                deg = -10
+              }
+              shots[i]['DEG'] = deg;
+            }
+            that.setData(
+              {
+                userId: wx.getStorageSync('userinfo').id,
+                book: res.data.book,
+                shots: shots,
+                selfRecord: res.data.selfRecord || null, 
+                shareRecord: res.data.shareRecord || null,
+                pageshow: true
+              })
+            //优先显示分享人的录音，默认显示自己的录音
+            if (that.data.shareRecord) {
+              that.setData({ selfRecord: that.data.shareRecord, card: -1, scrollHeight: H - W })
+            }
+            setTimeout(function () {
+              wx.setNavigationBarTitle({
+                title: that.data.book.bookName,
+              })
+            }, 300)
+          }
+          wx.hideToast()
+        })
+
+      util.GET(app.globalData.host + '/Forg/listRecord',{
+        session: wx.getStorageSync('session'),
+        bookId: that.bookId,
+        byLast: byLast,
+        page:page,
+        pageSize:pageSize
+      },function(res){
+        if (res && res.code == 1 && res.data && res.data.otherRecords && res.data.otherRecords.length>0){
+            that.setData({ otherRecords: res.data.otherRecords})
+          }else{
+            that.setData({ nodatas:true})
+          }
+      })
+      util.GET(app.globalData.host + '/Forg/getCollectStatus', {
+        session: wx.getStorageSync('session'),
+        bookId: that.bookId
+      }, function (res) {
+        if (res && res.code == 1) {
+          that.setData({ collectStatus: res.data })
+        }
+      })
+    })
+
     recorderManager.onStart(() => {
       clearInterval(recordTiming)
-      that.setData({recordTimingValue:'0分0秒'})
+      that.setData({ recordTimingValue: '0分0秒' })
       if (app.innerAudioContext && !app.innerAudioContext.paused) {
         app.innerAudioContext.pause()
       }
@@ -66,7 +192,7 @@ Page({
         if (recordTimingValue >= 10 * 60) {
           recorderManager.stop()
         }
-        that.setData({ recordTimingValue: Math.floor(recordTimingValue / 60) + '分' + (recordTimingValue%60)+'秒' })
+        that.setData({ recordTimingValue: Math.floor(recordTimingValue / 60) + '分' + (recordTimingValue % 60) + '秒' })
       }, 1000)
     });
     //错误回调
@@ -85,7 +211,7 @@ Page({
       clearInterval(recordTiming)
       console.log('录音停止')
       var music = wx.getStorageSync('music')
-      if ( !music.stopByMan && app.innerAudioContext.paused && app.innerAudioContext.src) {
+      if (!music.stopByMan && app.innerAudioContext.paused && app.innerAudioContext.src) {
         app.innerAudioContext.play()
       }
       if (recordTimingValue < 5) {
@@ -146,7 +272,7 @@ Page({
                     })
                     setTimeout(function () {
                       that.setData({ card: -1 })
-                    }, 1000)
+                    }, 500)
                   }
                 })
             } else {
@@ -178,21 +304,83 @@ Page({
     that.voiceListener()
 
   },
-  goHome:function(e){
+  moreListData:function(e){
+
     util.GET(app.globalData.host + '/FormId/collect',
       {
         session: wx.getStorageSync('session'),
         appId: app.globalData.appid,
         formId: e.detail.formId
       }, function () {
-        wx.navigateTo({
+        
+      })
+
+    var that = this
+    if(that.data.nomore){
+      return 
+    }
+    that.setData({loading:true})
+    page++
+    util.GET(app.globalData.host + '/Forg/listRecord', {
+      session: wx.getStorageSync('session'),
+      bookId: that.bookId,
+      byLast: byLast,
+      page: page,
+      pageSize: pageSize
+    }, function (res) {
+      if (res && res.code == 1 && res.data && res.data.otherRecords && res.data.otherRecords.length>0) {
+        var old = that.data.otherRecords
+        for (let i in res.data.otherRecords){
+          old.push(res.data.otherRecords[i])
+        }
+        that.setData({ otherRecords: old })
+      }else{
+        that.setData({ nomore: true })
+      }
+      that.setData({ loading:false})
+    })
+  },
+  goBack: function (e) {
+    var that = this
+    util.GET(app.globalData.host + '/FormId/collect',
+      {
+        session: wx.getStorageSync('session'),
+        appId: app.globalData.appid,
+        formId: e.detail.formId
+      }, function () { })
+
+    let pages = getCurrentPages();
+    console.log('getCurrentPages', pages)
+    if (pages.length > 1) {
+      wx.navigateBack({
+        delta: 1
+      })
+    } else {
+      wx.redirectTo({
+        url: '/pages/list/list',
+      })
+      /*
+      wx.switchTab({
+        url: '/pages/list/list',
+      })
+      */
+    }
+  },
+  goHome: function (e) {
+    console.log('goHome',e)
+    util.GET(app.globalData.host + '/FormId/collect',
+      {
+        session: wx.getStorageSync('session'),
+        appId: app.globalData.appid,
+        formId: e.detail.formId
+      }, function () {
+        wx.redirectTo({
           url: '/pages/list/list',
-        })
+        }) 
       })
   },
   reflush: function (e) {
     var that = this
-
     util.GET(app.globalData.host + '/FormId/collect',
       {
         session: wx.getStorageSync('session'),
@@ -269,7 +457,7 @@ Page({
             shots: shots,
             nothing: false
           })
-      }, 2000)
+      }, 500)
     }
 
     if (endX - startX > 0 && absY < piancha) {//正东
@@ -311,7 +499,7 @@ Page({
     that.setData({ shots: copyList })
   },
   moveItemEnd: function (e) {
-   
+
   },
   addBookFlow: function () {
     var that = this
@@ -332,7 +520,7 @@ Page({
             })
 
           var animationBookFlow = wx.createAnimation({
-            duration: 1000,
+            duration: 500,
             timingFunction: 'ease',
           })
           that.animationBookFlow = animationBookFlow
@@ -367,20 +555,20 @@ Page({
     var that = this
     console.log('playVoice')
     var idx = e.currentTarget.dataset.idx
-    that.setData({ currentVoice: idx,loadingVoice:true })
+    that.setData({ currentVoice: idx, loadingVoice: true })
     util.GET(app.globalData.host + '/Forg/getRecordUrl',
       {
         session: wx.getStorageSync('session'),
         recordId: idx
       }, function (res) {
-        if(res && res.data && res.code == 1){
-          playVoice.src = res.data 
-          playVoice.play() 
-        }else{
-          util.showToast('录音损坏','error')
+        if (res && res.data && res.code == 1) {
+          playVoice.src = res.data
+          playVoice.play()
+        } else {
+          util.showToast('录音损坏', 'error')
         }
       })
-    
+
   },
   stopVoice: function (e) {
     console.log('stopVoice')
@@ -525,81 +713,15 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
-    var that = this
+  onShow: function () { 
 
-    util.checkLogin(false, function () {
-      backgroundMusic.instance(app.globalData.host + '/Forg/listMusic', function (music) {
-       
-        that.setData({ music: music })
-        that.soundScale()
-        that.linsternAudioEvent()
-        backgroundMusic.autoPlayMusic()
-
-        util.GET(app.globalData.host + '/Forg/getBook',
-          {
-            session: wx.getStorageSync('session'),
-            bookId: that.bookId,
-            record: true,
-            shareUserId: that.shareUserId
-          },
-          function (res) {
-            if (res && res.code == 1) {
-              let shots = res.data.shots
-              for (let i in shots) {
-                shots[i]['X'] = 0;
-                shots[i]['Y'] = 10;
-                let deg = (i - 3) * 2;
-                if (deg > 10) {
-                  deg = 10
-                }
-                if (deg < -10) {
-                  deg = -10
-                }
-                shots[i]['DEG'] = deg;
-              }
-              that.setData(
-                {
-                  userId: wx.getStorageSync('userinfo').id,
-                  book: res.data.book,
-                  shots: shots,
-                  selfRecord: res.data.selfRecord || null,
-                  otherRecords: res.data.otherRecords || null,
-                  shareRecord: res.data.shareRecord || null,
-                  pageshow: true
-                })
-
-              if (that.data.book.musicId != -1) {
-                var music = wx.getStorageSync('music')
-                for (let k in music.musicOrginList) {
-                  if (that.data.book.musicId === music.musicOrginList[k].id) {
-                    backgroundMusic.playMusic(k)
-                  }
-                }
-              }
-              //优先显示分享人的录音，默认显示自己的录音
-              if (that.data.shareRecord) {
-                that.setData({ selfRecord: that.data.shareRecord, card: -1, scrollHeight: H - W })
-              }
-              setTimeout(function () {
-                wx.setNavigationBarTitle({
-                  title: that.data.book.bookName,
-                })
-              }, 300)
-            }
-            wx.hideToast()
-          })
-      }) 
-    })
-
-
-    
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
+    playVoice.destroy()
     console.log('clear interval')
     clearInterval(soundScale1)
     clearInterval(soundScale2)
@@ -611,25 +733,25 @@ Page({
     playVoice.stop()
   },
   showMoreRecords: function () {
-    var that = this 
+    var that = this
   },
-  changeCard: function (e) { 
+  changeCard: function (e) {
     var that = this
     if (!that.data.selfRecord && !that.data.otherRecords) {
-      util.showToast('还没人朗读','info')
+      util.showToast('还没人朗读', 'info')
       return
-    } 
-    var card = e.currentTarget.dataset.card 
+    }
+    var card = e.currentTarget.dataset.card
     var animation1 = wx.createAnimation({
       duration: 1000,
       timingFunction: 'ease',
     })
-    that.animation1 = animation1 
+    that.animation1 = animation1
     var animation2 = wx.createAnimation({
       duration: 1000,
       timingFunction: 'ease',
     })
-    console.log('changeCard',card)
+    console.log('changeCard', card)
     that.animation2 = animation2
     if (card == -1) {
       animation1.rotateY(180).opacity(0).step()
@@ -639,7 +761,7 @@ Page({
         animationData2: animation2.export()
       })
       setTimeout(function () {
-        that.setData({ card: card,   scrollHeight: H - W })
+        that.setData({ card: card, scrollHeight: H - W })
       }, 1000)
     } else if (card == 1) {
       animation2.rotateY(180).opacity(0).step()
@@ -657,7 +779,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+   
   },
 
   /**
@@ -680,7 +802,7 @@ Page({
   onShareAppMessage: function () {
     var that = this
     return {
-      title: '我在小青蛙朗诵了《' + that.data.book.bookName+'》,快来听听吧~',
+      title: '小青蛙邀请您来朗诵《' + that.data.book.bookName + '》,快来展示自己朗诵魅力吧！',
       path: '/pages/index/index?shareUserId=' + that.data.userId + '&bookId=' + that.data.book.id,
       success: function (res) {
         // 转发成功
@@ -770,6 +892,9 @@ Page({
   },
   voiceListener: function () {
     var that = this
+    playVoice = wx.createInnerAudioContext()
+    playVoice.autoplay = true
+    
     playVoice.onPlay(() => {
       console.log('开始播放声音')
       app.innerAudioContext.pause()

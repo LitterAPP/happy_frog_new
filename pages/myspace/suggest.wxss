@@ -1,0 +1,6 @@
+@import '/pages/create/create.wxss';
+page{
+  background: #fff;
+}
+
+ 

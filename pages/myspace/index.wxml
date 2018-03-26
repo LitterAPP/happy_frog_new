@@ -1,0 +1,105 @@
+<!--pages/myspace/index.wxml-->
+<view class='topPlaceHolder'>
+</view>
+
+<view class='userinfo'>
+  <view class='userinfo-item'>
+    <image src='{{userinfo.avatarUrl}}'></image>
+    <text>{{userinfo.nickName}}</text>
+  </view>
+</view>
+
+<view class='box-container' style='width:{{W}}px;height:100%;margin-top:10px;'>
+  <view class='box-1' style='width:{{W}}px;margin-top:10px;'>
+    <view class='box-1-l' hover-class='box-hover' catchtap='fansItemClick' style='margin-left:5px;width:{{W/2}}px;height:{{W/2}}px;'>
+      <view class='box-1-l-1'>
+        <text wx:if='{{fansRedDot}}' class='red-dot'>
+          <block wx:if='{{newFans>999}}'>...</block>
+          <block wx:else>{{newFans}}</block>
+        </text>
+        <image src='/images/fensi.png'></image>
+        <text class='box-1-l-1-1'>关注我的</text>
+        <text class='box-1-l-1-2' style=''>{{data.fans}}</text>
+      </view>
+    </view>
+
+    <view class='box-1-r' style='margin-left:5px;margin-right:5px;height:{{W/2}}px;'>
+      <view class='box-1-r-1' hover-class='box-hover' catchtap='goToBookList' data-flag='1' style='width:{{W/2}}px;height:{{(W/2)/3}}px;margin-bottom:5px;'>
+        <view class='box-1-r-1-1'>
+          <text class='box-1-l-1-1' style='font-size:15px;'>我的朗读</text>
+          <text class='box-1-l-1-2'>({{data.reads}})</text>
+        </view>
+      </view>
+      <view class='box-1-r-1' hover-class='box-hover' catchtap='goToBookList' data-flag='2' style='width:{{W/2}}px;height:{{(W/2)/3}}px;margin-bottom:5px;'>
+        <view class='box-1-r-1-1'>
+          <text class='box-1-l-1-1' style='font-size:15px;'>我的收藏</text>
+          <text class='box-1-l-1-2'>({{data.collects}})</text>
+        </view>
+      </view>
+      <view class='box-1-r-1' hover-class='box-hover' catchtap='goToBookList' data-flag='3' style='width:{{W/2}}px;height:{{(W/2)/3}}px;'>
+        <view class='box-1-r-1-1'>
+          <text class='box-1-l-1-1' style='font-size:15px;'>我的足迹</text>
+          <text class='box-1-l-1-2'>({{data.views}})</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class='box-1' style='width:{{W}}px;margin-top:10px;'>
+    <view class='box-1-l' hover-class='box-hover' catchtap='goMyFollowed' style='margin-left:5px;width:{{(W-20)/3}}px;height:{{W/3}}px;'>
+      <view class='box-1-l-1'>
+        <image src='/images/my-followed.png'></image>
+        <text class='box-1-l-1-1'>我关注的</text>
+        <text class='box-1-l-1-2'>{{data.followed}}</text>
+      </view>
+    </view>
+
+    <view class='box-1-l' hover-class='box-hover' catchtap='goTotalRank' style='margin-left:5px;width:{{(W-20)/3}}px;height:{{W/3}}px;'>
+      <view class='box-1-l-1'>
+        <image src='/images/rank.png'></image>
+        <text class='box-1-l-1-1'>总榜单</text>
+        <text class='box-1-l-1-2'>第{{data.rank}}名</text>
+      </view>
+    </view>
+
+    <view class='box-1-l' hover-class='box-hover' catchtap='goRace' style='margin-right:5px;margin-left:5px;width:{{(W-20)/3}}px;height:{{W/3}}px;'>
+      <view class='box-1-l-1'>
+        <image src='/images/race.png'></image>
+        <text class='box-1-l-1-1'>比赛</text>
+        <text wx:if='{{data.racing}}' class='box-1-l-1-2'>进行中...</text>
+        <text wx:else class='box-1-l-1-2'>筹划中...</text>
+      </view>
+    </view>
+  </view>
+
+
+  <view class='box-1' style='width:{{W}}px;margin-top:10px;'>
+    <view class='box-1-l' catchtap='goSetting' hover-class='box-hover' style='margin-left:5px;width:{{(W-20)/3}}px;height:{{W/3}}px;'>
+      <view class='box-1-l-1'>
+        <image src='/images/setting.png'></image>
+        <text class='box-1-l-1-1'>设置</text>
+      </view>
+    </view>
+    
+    <view class='box-1-l' catchtap='goSuggest' hover-class='box-hover' style='margin-left:5px;margin-right:5px;width:{{(W-20)/3}}px;height:{{W/3}}px;'>
+      <view class='box-1-l-1'>
+        <image src='/images/suggest.png'></image>
+        <text class='box-1-l-1-1'>反馈</text>
+      </view>
+    </view>
+
+    <view  wx:if='{{userinfo.id==1789}}' class='box-1-l' catchtap='goSuggestList' hover-class='box-hover' style='margin-left:5px;margin-right:5px;width:{{(W-20)/3}}px;height:{{W/3}}px;'>
+      <view class='box-1-l-1'>
+        <image src='/images/suggest.png'></image>
+        <text class='box-1-l-1-1'>反馈回复</text>
+      </view>
+    </view>
+  </view>
+
+  <text style='margin-top:10px;font-size:14px;color:#ccc;'>V{{version}}</text>
+</view>
+
+<view class='top'>
+  <fbutton extImgStyle='height:25px;width:25px;' extStyle='width:30px;' adv='true' formType='submit' buttonImage='/images/back.png'  buttonText='' bind:fbutton-tap='goBack' />
+  <text class='top-title'>个人中心</text>
+</view>

@@ -1,0 +1,26 @@
+<view class='topPlaceHolder'>
+</view>
+
+<view class='card'>
+    <view class='card-title'>感谢您的反馈</view>
+    <view class='card-content'>
+       <textarea style='padding:5px;' bindinput='getSuggestContent' focus placeholder='请输入想要反馈的内容'></textarea>
+    </view>
+  </view>
+
+<view class='card'>
+    <view class='card-title'>提交相关图片</view>
+    <view class='card-content'>
+      <uploadImg h='{{W}}' deleteImgSrc='/images/clean.png' groups='{{covers}}' admin w='{{W}}' max='1' uploadButtonText='点击选择图片'  bind:item-changed='suggestImgChanged'></uploadImg>
+    </view>
+</view>
+
+
+<fbutton extStyle='position: fixed;bottom: 10px;left: 50%;margin-left:-80px;height:45px;line-height:45px;width:160px;border-radius:50px;' buttonText='提 交' bind:fbutton-tap='suggestCommit' formType='submit' />
+
+
+
+<view class='top'>
+  <fbutton extImgStyle='height:25px;width:25px;' extStyle='width:30px;' adv='true' formType='submit' buttonImage='/images/back.png' buttonText='' bind:fbutton-tap='goBack' />
+  <text class='top-title'>反馈或建议</text>
+</view>

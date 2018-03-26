@@ -1,0 +1,66 @@
+<view class='topPlaceHolder'>
+</view>
+<view class='myRank' wx:if='{{selfRank}}'>
+  <view class='myRank-1'>
+    <image class='avatar' src='{{selfRank.avatar}}'></image>
+    <text>{{selfRank.nickName}}</text>
+  </view>
+  <view class='myRank-1'>
+    <image class='flow' src='/images/gift-2.png'></image>
+    <text>{{selfRank.flows}}</text>
+  </view>
+  <text style='font-size:16px;color:#000;'>第{{selfRank.rank}}名</text>
+</view>
+<view class='rankTop' wx:if='{{rankTop}}'>
+  <view class='rankTop-1' wx:if='{{rankTop[0]}}'>
+    <text style='color:rgb(254,242,58);font-size:16px;'>第{{rankTop[0].rank}}名</text>
+    <image class='jb-image-jin' src='/images/jb_jin.png'></image>
+    <view class='rankTop-user'>
+      <image class='avatar' style='height:30px;width:30px;' src='{{rankTop[0].avatar}}'></image>
+      <text>{{rankTop[0].nickName}}</text>
+    </view>
+  </view>
+
+  <view class='rankTop-2' wx:if='{{rankTop[1]}}'>
+    <text style='color:#c0c0c0;font-size:15px;'>第{{rankTop[1].rank}}名</text>
+    <image class='jb-image-yin' src='/images/jb_yin.png'></image>
+    <view class='rankTop-user'>
+      <image class='avatar' style='height:30px;width:30px;' src='{{rankTop[1].avatar}}'></image>
+      <text>{{rankTop[1].nickName}}</text>
+    </view>
+  </view>
+
+  <view class='rankTop-3' wx:if='{{rankTop[2]}}'>
+    <text style='color:#B87333;font-size:14px;'>第{{rankTop[2].rank}}名</text>
+    <image class='jb-image-tong' src='/images/jb_tong.png'></image>
+    <view class='rankTop-user'>
+      <image class='avatar' style='height:30px;width:30px;' src='{{rankTop[2].avatar}}'></image>
+      <text>{{rankTop[2].nickName}}</text>
+    </view>
+  </view>
+</view>
+<scroll-view scroll-y style="height: {{H-330}}px;margin-top:10px;margin-bottom:10px;" class='moreRank' wx:if='{{rankList}}'>
+  <view class='myRank' wx:for='{{rankList}}' wx:key='{{id}}'>
+    <view class='myRank-1'>
+      <image class='avatar' style='height:30px;width:30px;' src='{{item.avatar}}'></image>
+      <text>{{item.nickName}}</text>
+    </view>
+    <view class='myRank-1'>
+      <image class='flow' src='/images/gift-2.png'></image>
+      <text>{{item.flows}}</text>
+    </view>
+    <text style='font-size:16px;color:#000;'>第{{item.rank}}名</text>
+  </view>
+</scroll-view>
+
+<button wx:if='{{selfRank}}' type='primary' open-type='share'>分享战绩</button>
+
+<form wx:else report-submit bindsubmit='goActivityList'>
+  <button type='warn' open-type='share'>我也要参赛</button>
+</form>
+
+
+<view class='top' style='background:rgba(255, 255, 255, 1);'>
+  <fbutton extImgStyle='height:25px;width:25px;' extStyle='width:30px;' adv='true' formType='submit' buttonImage='/images/back.png' buttonText='' bind:fbutton-tap='goBack' />
+  <text class='top-title'>比赛结果</text>
+</view>

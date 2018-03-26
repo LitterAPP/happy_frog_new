@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "fbutton": "/comp/formbutton/fbutton"
+  }
+}

@@ -17,6 +17,7 @@
   background: #fff; 
   box-shadow:1px 0px 1px #888;
   overflow: hidden;
+  top:100px;
 }
 .bookName{
   position: absolute;
@@ -41,6 +42,19 @@
   padding: 5px; 
 }
 
+.recordNumber{
+  position: absolute;
+  bottom: 0px;
+  right: 0px;   
+  font-size: 13px;
+  color: #666;      
+  padding: 5px; 
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+}
+
 .flowNumber{
   display: flex;
   flex-direction: row;
@@ -50,8 +64,9 @@
   align-content: center;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  padding: 0px 5px;
 }
 .flowNumber image{
   height: 30px;
@@ -69,7 +84,7 @@
   align-content: center;
   align-items: center;
   justify-content: flex-start;
-  top: 10px;
+  top: 60px;
   left: 10px;
 }
 .button-list image{
@@ -113,4 +128,60 @@
 } 
 .huanbian{
   position: absolute;  
+}
+.top3{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  margin: 10px;
+  justify-content: space-between;
+}
+.top3-item{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  margin: 1px;
+  padding: 5px;
+  background: rgba(230, 230, 230, 0.5);
+  border-radius: 5px;
+}
+.top3-item-hover{
+  background: rgba(230, 230, 230, 0.8);
+}
+
+.top3-item text{
+  max-width: 80px;
+  overflow: hidden; 
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.top3-item image{
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border:2px solid #fff;
+}
+.top3-item-1{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+}
+.top3-item-1-1{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+  margin-top:5px; 
+}
+.top3-item-1 image{
+  width: 20px;
+  height: 20px;
+  border-radius: 0;
+  border:0px solid #fff;
 }

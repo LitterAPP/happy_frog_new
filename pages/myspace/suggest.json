@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "fbutton": "/comp/formbutton/fbutton",
+    "uploadImg": "/comp/uploadImg"
+  },
+  "enablePullDownRefresh": false
+}

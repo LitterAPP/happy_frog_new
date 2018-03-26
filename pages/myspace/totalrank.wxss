@@ -1,0 +1,35 @@
+.scroll-item{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  justify-content: space-between;
+  margin: 10px; 
+}
+
+.scroll-item-1-1{
+   display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+    border-bottom: 1px solid #F8F8FF;
+
+}
+.avatar{
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border:2px solid #fff;
+}
+.zan{
+  width: 30px;
+  height: 30px;
+}
+
+text{
+  max-width: 100px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+}

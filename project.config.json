@@ -21,6 +21,10 @@
 			"current": -1,
 			"list": []
 		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
 		"game": {
 			"currentL": -1,
 			"list": []
@@ -55,6 +59,78 @@
 					"id": -1,
 					"name": "wish",
 					"pathName": "wish/pages/bainian/index",
+					"query": ""
+				},
+				{
+					"id": 4,
+					"name": "文章详情",
+					"pathName": "pages/index/index",
+					"query": "bookId=57"
+				},
+				{
+					"id": 5,
+					"name": "某某的朗读",
+					"pathName": "pages/read/view",
+					"query": "readId=368"
+				},
+				{
+					"id": -1,
+					"name": "我要朗读",
+					"pathName": "pages/read/read",
+					"query": "bookId=57"
+				},
+				{
+					"id": -1,
+					"name": "createBook",
+					"pathName": "pages/create/create",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "个人设置中心",
+					"pathName": "pages/myspace/index",
+					"query": "readId=365"
+				},
+				{
+					"id": -1,
+					"name": "设置",
+					"pathName": "pages/myspace/setting",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "粉丝列表",
+					"pathName": "pages/myspace/follower",
+					"query": ""
+				},
+				{
+					"id": 11,
+					"name": "我的书列表",
+					"pathName": "pages/myspace/booklist",
+					"query": "flag=1"
+				},
+				{
+					"id": -1,
+					"name": "总榜单",
+					"pathName": "pages/myspace/totalrank",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "个人中心书籍列表",
+					"pathName": "pages/myspace/booklist",
+					"query": "flag=4&otherUserId=1789"
+				},
+				{
+					"id": -1,
+					"name": "建议提交",
+					"pathName": "pages/myspace/suggest",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "反馈回复",
+					"pathName": "pages/myspace/suggestlist",
 					"query": ""
 				}
 			]

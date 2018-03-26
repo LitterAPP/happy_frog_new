@@ -1,0 +1,22 @@
+.scroll-item{
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 10px;
+  border-bottom: 1px dotted #666;
+}
+
+.avatar {
+  height: 40px;
+  width: 40px;
+}
+
+.user-info{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  justify-content: flex-start;
+}

@@ -1,111 +1,168 @@
-<view class='container' style='width:{{W}}px;height:{{H}}px;'>
-  <block wx:if='{{nothing}}'>
-    <view class='nonthing'>
-      <image catchtap='reflush' src='/images/forg-2.png' style='width:120px;height:100px;'></image>
-      <text style='font-size:14px;color:#666;'>没有了</text>
-    </view>
-  </block>
+<view class='container' style='width:{{W}}px;height:{{H-48}}px;'>
   <!--
 <swiper style='height:{{W}}px;'>
   <block wx:for="{{shots}}" wx:key='{{id}}'>
     <swiper-item>
       <image src="{{item.pageShot}}" style='width:{{W}}px;height:{{W}}px;' />
     </swiper-item>
-  </block>
+  </block>;
 </swiper>
---> 
+-->
   <block wx:for='{{shots}}' wx:key='id'>
-    <view style='background:#fff;position: absolute;top:25px; border:1px solid #ccc;width:{{ItemW}}px;height:{{ItemW+30}}px;transition:transform 1000ms ease 0ms;transform:translate({{item.X}}px, {{item.Y}}px) rotate({{item.DEG}}deg);transform-origin:35% 60% 0px;z-index:3;'
+    <view style='background:#fff;position: absolute;top:75px; border:1px solid #ccc;width:{{ItemW}}px;height:{{ItemW+15}}px;transition:transform 1000ms ease 0ms;transform:translate({{item.X}}px, {{item.Y}}px) rotate({{item.DEG}}deg);transform-origin:35% 60% 0px;z-index:3;'
       data-bookid='{{item.id}}' data-idx='{{index}}' catchtouchstart='moveItemStart' catchtouchmove='movingItem'>
       <image mode='aspectFit' style='width:{{ItemW}}px;height:{{ItemW}}px;' src='{{item.pageShot}}'></image>
-      <view class='bookName' style='width:{{ItemW-3}}px;height:30px;'>
+      <view class='bookName' style='width:{{ItemW-3}}px;height:15px;'>
         <text style='width:100%;color:#666;'>{{item.pageNum}}/{{shots.length}}</text>
       </view>
     </view>
-  </block> 
-  <view animation='{{animationData1}}' wx:if='{{!card || card==1}}'   data-card='{{card}}' class='record' style='width:{{W}}px;;bottom:20px;height:{{H-W}}px; '>
-    <view class='record-1' style='width:{{W}}px;  ' wx:if='{{!flag || flag==-1}}'> 
-      <form data-flag='1' report-submit bindsubmit='record'>
-        <view class='wrap-button'>
-          <image src='/images/record-btn.png'></image>
-          <text style='color:#ccc;margin-top:25px;'>我也来读一读</text>
-          <button style='height:60px;width:50px;' form-type='submit'></button>
+  </block>
+   
+
+  <block wx:if='{{isApproved && otherRecords && otherRecords.length>0 }}'>
+    <view class='rank-container' style='width:{{W}}px;;bottom:5px;height:{{H-ItemW-15-75-48-25}}px; '>
+      <scroll-view scroll-y style="height:{{H-ItemW-15-75-48-25}}px;">
+        <view style='color:#8a8a8a;font-size:14px;margin-left:5px;'>排行榜</view>
+        <view class='scroll-item' data-idx='{{index}}' catchtap='rankItemClick' wx:for='{{otherRecords}}' wx:key='{{id}}'>
+          <view class='scroll-item-left'>
+            <block wx:if='{{index<=2}}'>
+              <image wx:if='{{index==0}}' src='/images/jp-icon.png'></image>
+              <image wx:if='{{index==1}}' src='/images/yp-icon.png'></image>
+              <image wx:if='{{index==2}}' src='/images/tp-icon.png'></image>
+            </block>
+            <text style='font-size:14px;' wx:else>{{index+1}}</text>
+          </view>
+          <view class='scroll-item-right' style='width:{{W-30}}px;'>
+            <view class='scroll-item-user'>
+              <image class='scroll-item-user-avatar' src='{{item.avatar}}'></image>
+              <view class='scroll-item-user-info'>
+                <text class='scroll-item-user-nickname' style='color:#40d37a;font-size:14px;'>{{item.nickName}}</text>
+                <text class='scroll-item-time'>{{item.createTime}}</text>
+                <!--
+              <text class='scroll-item-time'>播放:{{item.playTimes}}次</text>
+              -->
+                <view class='play-time-item-self' wx:if='{{currentVoice == item.id }}' style='width:100px;height:40px;top:0px;margin-left:-30px;left:50%;'>
+                  <view class='musicSound' style='left: 5px;transform:scaleY({{musicSoundScaleY1}});'></view>
+                  <view class='musicSound' style='left: 20px;transform:scaleY({{musicSoundScaleY2}});'></view>
+                  <view class='musicSound' style='left: 35px;transform:scaleY({{musicSoundScaleY3}});'></view>
+                  <view class='musicSound' style='left: 50px;transform:scaleY({{musicSoundScaleY4}});'></view>
+                  <view class='musicSound' style='left: 65px;transform:scaleY({{musicSoundScaleY5}});'></view>
+                  <view class='musicSound' style='left: 80px;transform:scaleY({{musicSoundScaleY6}});'></view>
+                  <view class='musicSound' style='left: 95px;transform:scaleY({{musicSoundScaleY7}});'></view>
+                </view>
+              </view>
+            </view>   
+            <view class='scroll-item-flow'>
+              <view class='scroll-item-user-flows'  style='width:30px;' data-idx='{{item.id}}'>
+                <image class='scroll-item-user-flow-img'  style='width:20px;height:20px;' src='/images/zan-0.png'></image>
+                <text class='scroll-item-user-flow-number'>{{item.flows}}</text>
+              </view>
+              <view class='scroll-item-user-flows'  style='width:30px;' data-idx='{{item.id}}'>
+                <image class='scroll-item-user-flow-img'  style='width:20px;height:20px;' src='/images/listen-0.png'></image>
+                <text class='scroll-item-user-flow-number'>{{item.playTimes}}</text>
+              </view>
+            </view>
+          </view>
         </view>
-      </form> 
+        <!---moreListData-->
+        <view class='nomoredata'>
+           <fbutton wx:if='{{!nomore && !loading && !nodatas}}' extStyle='background:rgba(0,0,0,0);color:#888;width:200px;' bind:fbutton-tap='moreListData' formType='submit' buttonText='点击查看更多' />
+           <text wx:if='{{loading}}'>加载中...</text>
+           <text wx:if='{{nomore}}'>没有更多了</text>   
+           <text wx:if='{{nodatas}}'>还没有任何人朗读，赶紧去抢沙发吧~</text>                       
+        </view> 
+      </scroll-view>
     </view>
-    <view class='record-1' style='width:{{W}}px;  ' wx:else>
-      <form data-flag='-1' report-submit bindsubmit='record'>
-        <view class='wrap-button'>
-          <image src='/images/recording.gif'></image>
-          <text style='color:#666;margin-top:25px;'>{{recordTimingValue}}</text>
-          
-          <button style='height:60px;width:50px;' form-type='submit'></button>
-        </view>
-      </form>
-    </view>
+  </block>
+  <view wx:if='{{isApproved}}' class='fix-bottom' style='height:48px;'>
+    <fbutton adv='true' wx:if='{{collectStatus==0}}' formType='submit' buttonImage='/images/collect-0.png' buttonText='收藏' bind:fbutton-tap='collectBook' />
+    <fbutton adv='true' wx:if='{{collectStatus==1}}' formType='submit' buttonImage='/images/collect-1.png' buttonText='取消' bind:fbutton-tap='collectBook' />
+    <fbutton extStyle='width:140px;' formType='submit' data-bookid='{{book.id}}' buttonText='我要朗读' bind:fbutton-tap='goToRead' />
+    <fbutton adv='true' openType='share' buttonImage='/images/share.png' buttonText='分享' />
   </view>
-  <scroll-view animation='{{animationData2}}' wx:if='{{card==-1}}' scroll-x='{{true}}'   data-card='{{card}}' class='record' style='width:100%;height:{{scrollHeight-35}}px;bottom:0px;z-index:10;background:rgba(255,255,255,0.8);'>
-    <block wx:if='{{selfRecord}}'>
-      <view class='list-item-self' style='width:{{W-50}}px;height:{{scrollHeight}}px;'>
-        <view class='avatar-item' style='margin-left:-15px;'>
-          <image class='playImg' src='{{selfRecord.avatar}}'></image>
-        </view>
-        <view class='avatar-item' style='margin-left:-10px;top:30px;margin-top:-15px;opacity: 0.8;'>
-          <image  style='height:20px;width:20px;' wx:if='{{currentVoice == selfRecord.id}}' class='playImg' catchtap='stopVoice' data-idx='{{selfRecord.id}}' src='/images/voice-stop.png'></image>
-          <image style='height:20px;width:20px;' wx:else class='playImg' catchtap='playVoice' data-recordurl='{{selfRecord.recordUrl}}' data-idx='{{selfRecord.id}}' src='/images/voice-play.png'></image>
-        </view>
-        <view class='avatar-item' style='margin-left:-30px;top:40px;'>
-            <text class='nickName'>{{selfRecord.nickName}}</text>
-        </view>
-
-        <view wx:if='{{animationFlowIdx == selfRecord.id}}' class='flow-item' style='width:100px;margin-left:-50px;' catchtap='addFlow' data-idx='{{selfRecord.id}}' animation='{{animationFlowData}}'>
-          <image src='/images/gift-2.png'></image>
-          <text>+{{selfRecord.flows}}</text>
-        </view>
-        <view wx:else class='flow-item' catchtap='addFlow'  style='width:100px;margin-left:-50px;' data-idx='{{selfRecord.id}}'>
-          <image src='/images/gift-2.png'></image>
-          <text>+{{selfRecord.flows}}</text>
-        </view>
-        <view class='play-time-item-self' style='width:100px;top:85px;margin-left:-50px;'>
-          <text>播放:</text>
-          <text>{{selfRecord.playTimes}}次</text>
-        </view>
-        <view class='play-time-item-self' style='width:100px;top:105px;margin-left:-50px;'>
-          <text>时长:</text>
-          <text>{{selfRecord.duration}}</text>
-        </view>
-
-        <view class='play-time-item-self' wx:if='{{currentVoice == selfRecord.id }}' style='width:100px;top:120px;margin-left:-50px;'>
-          <view class='musicSound' style='left: 5px;transform:scaleY({{musicSoundScaleY1}});'></view>
-           <view class='musicSound' style='left: 20px;transform:scaleY({{musicSoundScaleY2}});'></view>
-           <view class='musicSound' style='left: 35px;transform:scaleY({{musicSoundScaleY3}});'></view>
-           <view class='musicSound' style='left: 50px;transform:scaleY({{musicSoundScaleY4}});'></view>
-           <view class='musicSound' style='left: 65px;transform:scaleY({{musicSoundScaleY5}});'></view>
-           <view class='musicSound' style='left: 80px;transform:scaleY({{musicSoundScaleY6}});'></view>
-           <view class='musicSound' style='left: 95px;transform:scaleY({{musicSoundScaleY7}});'></view> 
-        </view>
-
-        
+  <!--
+  <block wx:if='{{isApproved}}'> 
+    <view animation='{{animationData1}}' wx:if='{{!card || card==1}}' data-card='{{card}}' class='record' style='width:{{W}}px;;bottom:20px;height:{{H-W}}px; '>
+      <view class='record-1' style='width:{{W}}px;  ' wx:if='{{!flag || flag==-1}}'>
+        <form data-flag='1' report-submit bindsubmit='record'>
+          <view class='wrap-button'>
+            <image src='/images/record-btn.png'></image>
+            <text style='color:#ccc;margin-top:25px;'>我也来读一读</text>
+            <button style='height:60px;width:50px;' form-type='submit'></button>
+          </view>
+        </form>
       </view>
-    </block>
-    <view class='list-item-self' style='width:{{110}}px;height:{{scrollHeight}}px;' wx:for='{{otherRecords}}' wx:key='{{id}}'>
+      <view class='record-1' style='width:{{W}}px;  ' wx:else>
+        <form data-flag='-1' report-submit bindsubmit='record'>
+          <view class='wrap-button'>
+            <image src='/images/recording.gif'></image>
+            <text style='color:#666;margin-top:25px;'>{{recordTimingValue}}</text>
+
+            <button style='height:60px;width:50px;' form-type='submit'></button>
+          </view>
+        </form>
+      </view>
+    </view>
+    <scroll-view animation='{{animationData2}}' wx:if='{{card==-1}}' scroll-x='{{true}}' data-card='{{card}}' class='record' style='width:100%;height:{{scrollHeight-35}}px;bottom:0px;z-index:10;background:rgba(255,255,255,0.8);'>
+      <block wx:if='{{selfRecord}}'>
+        <view class='list-item-self' style='width:{{W-50}}px;height:{{scrollHeight}}px;'>
+          <view class='avatar-item' style='margin-left:-15px;'>
+            <image class='playImg' src='{{selfRecord.avatar}}'></image>
+          </view>
+          <view class='avatar-item' style='margin-left:-10px;top:30px;margin-top:-15px;opacity: 0.8;'>
+            <image style='height:20px;width:20px;' wx:if='{{currentVoice == selfRecord.id}}' class='playImg' catchtap='stopVoice' data-idx='{{selfRecord.id}}' src='/images/voice-stop.png'></image>
+            <image style='height:20px;width:20px;' wx:else class='playImg' catchtap='playVoice' data-recordurl='{{selfRecord.recordUrl}}' data-idx='{{selfRecord.id}}' src='/images/voice-play.png'></image>
+          </view>
+          <view class='avatar-item' style='margin-left:-30px;top:40px;'>
+            <text class='nickName'>{{selfRecord.nickName}}</text>
+          </view>
+
+          <view wx:if='{{animationFlowIdx == selfRecord.id}}' class='flow-item' style='width:100px;margin-left:-50px;' catchtap='addFlow' data-idx='{{selfRecord.id}}' animation='{{animationFlowData}}'>
+            <image src='/images/gift-2.png'></image>
+            <text>+{{selfRecord.flows}}</text>
+          </view>
+          <view wx:else class='flow-item' catchtap='addFlow' style='width:100px;margin-left:-50px;' data-idx='{{selfRecord.id}}'>
+            <image src='/images/gift-2.png'></image>
+            <text>+{{selfRecord.flows}}</text>
+          </view>
+          <view class='play-time-item-self' style='width:100px;top:85px;margin-left:-50px;'>
+            <text>播放:</text>
+            <text>{{selfRecord.playTimes}}次</text>
+          </view>
+          <view class='play-time-item-self' style='width:100px;top:105px;margin-left:-50px;'>
+            <text>时长:</text>
+            <text>{{selfRecord.duration}}</text>
+          </view>
+
+          <view class='play-time-item-self' wx:if='{{currentVoice == selfRecord.id }}' style='width:100px;top:120px;margin-left:-50px;'>
+            <view class='musicSound' style='left: 5px;transform:scaleY({{musicSoundScaleY1}});'></view>
+            <view class='musicSound' style='left: 20px;transform:scaleY({{musicSoundScaleY2}});'></view>
+            <view class='musicSound' style='left: 35px;transform:scaleY({{musicSoundScaleY3}});'></view>
+            <view class='musicSound' style='left: 50px;transform:scaleY({{musicSoundScaleY4}});'></view>
+            <view class='musicSound' style='left: 65px;transform:scaleY({{musicSoundScaleY5}});'></view>
+            <view class='musicSound' style='left: 80px;transform:scaleY({{musicSoundScaleY6}});'></view>
+            <view class='musicSound' style='left: 95px;transform:scaleY({{musicSoundScaleY7}});'></view>
+          </view>
+        </view>
+      </block>
+      <view class='list-item-self' style='width:{{110}}px;height:{{scrollHeight}}px;' wx:for='{{otherRecords}}' wx:key='{{id}}'>
         <view class='avatar-item' style='margin-left:-15px;'>
           <image class='playImg' src='{{item.avatar}}'></image>
-        </view> 
-         <view class='avatar-item' style='margin-left:-10px;top:30px;margin-top:-15px;opacity: 0.8;'>
-          <image  style='height:20px;width:20px;' wx:if='{{currentVoice == item.id}}' class='playImg' catchtap='stopVoice' data-idx='{{item.id}}' src='/images/voice-stop.png'></image>
+        </view>
+        <view class='avatar-item' style='margin-left:-10px;top:30px;margin-top:-15px;opacity: 0.8;'>
+          <image style='height:20px;width:20px;' wx:if='{{currentVoice == item.id}}' class='playImg' catchtap='stopVoice' data-idx='{{item.id}}' src='/images/voice-stop.png'></image>
           <image style='height:20px;width:20px;' wx:else class='playImg' catchtap='playVoice' data-recordurl='{{item.recordUrl}}' data-idx='{{item.id}}' src='/images/voice-play.png'></image>
         </view>
 
         <view class='avatar-item' style='margin-left:-30px;top:35px;'>
-            <text class='nickName'>{{item.nickName}}</text>
+          <text class='nickName'>{{item.nickName}}</text>
         </view>
 
         <view wx:if='{{animationFlowIdx == item.id}}' class='flow-item' style='width:100px;margin-left:-50px;' catchtap='addFlow' data-idx='{{item.id}}' animation='{{animationFlowData}}'>
           <image src='/images/gift-2.png'></image>
           <text>+{{item.flows}}</text>
         </view>
-        <view wx:else class='flow-item' catchtap='addFlow'  style='width:100px;margin-left:-50px;' data-idx='{{item.id}}'>
+        <view wx:else class='flow-item' catchtap='addFlow' style='width:100px;margin-left:-50px;' data-idx='{{item.id}}'>
           <image src='/images/gift-2.png'></image>
           <text>+{{item.flows}}</text>
         </view>
@@ -117,20 +174,22 @@
           <text>时长:</text>
           <text>{{item.duration}}</text>
         </view>
-      <view class='play-time-item-self' wx:if='{{currentVoice == item.id }}' style='width:100px;top:120px;margin-left:-50px;'>
-           <view class='musicSound' style='left: 5px;transform:scaleY({{musicSoundScaleY1}});'></view>
-           <view class='musicSound' style='left: 20px;transform:scaleY({{musicSoundScaleY2}});'></view>
-           <view class='musicSound' style='left: 35px;transform:scaleY({{musicSoundScaleY3}});'></view>
-           <view class='musicSound' style='left: 50px;transform:scaleY({{musicSoundScaleY4}});'></view>
-           <view class='musicSound' style='left: 65px;transform:scaleY({{musicSoundScaleY5}});'></view>
-           <view class='musicSound' style='left: 80px;transform:scaleY({{musicSoundScaleY6}});'></view>
-           <view class='musicSound' style='left: 95px;transform:scaleY({{musicSoundScaleY7}});'></view> 
+        <view class='play-time-item-self' wx:if='{{currentVoice == item.id }}' style='width:100px;top:120px;margin-left:-50px;'>
+          <view class='musicSound' style='left: 5px;transform:scaleY({{musicSoundScaleY1}});'></view>
+          <view class='musicSound' style='left: 20px;transform:scaleY({{musicSoundScaleY2}});'></view>
+          <view class='musicSound' style='left: 35px;transform:scaleY({{musicSoundScaleY3}});'></view>
+          <view class='musicSound' style='left: 50px;transform:scaleY({{musicSoundScaleY4}});'></view>
+          <view class='musicSound' style='left: 65px;transform:scaleY({{musicSoundScaleY5}});'></view>
+          <view class='musicSound' style='left: 80px;transform:scaleY({{musicSoundScaleY6}});'></view>
+          <view class='musicSound' style='left: 95px;transform:scaleY({{musicSoundScaleY7}});'></view>
         </view>
-      </view> 
-  </scroll-view>
+      </view>
+    </scroll-view>
 
-  <image catchtap='changeCard'  wx:if='{{card == 1}}' data-card='-1' style='height: 30px;width: 30px;position: absolute;right: 10px;top:{{W+20}}px;z-index:11;' src='/images/arrow-right.png'></image> 
-   <image catchtap='changeCard'  wx:if='{{card == -1}}' data-card='1' style='height: 30px;width: 30px;position: absolute;left: 10px;top:{{W+20}}px;z-index:11; transform-origin: 50% 50% 50% 0; transform:rotate(180deg);' src='/images/arrow-right.png'></image> 
+    <image catchtap='changeCard' wx:if='{{card == 1}}' data-card='-1' style='height: 30px;width: 30px;position: absolute;right: 10px;top:{{W+20}}px;z-index:11;' src='/images/arrow-right.png'></image>
+    <image catchtap='changeCard' wx:if='{{card == -1}}' data-card='1' style='height: 30px;width: 30px;position: absolute;left: 10px;top:{{W+20}}px;z-index:11; transform-origin: 50% 50% 50% 0; transform:rotate(180deg);' src='/images/arrow-right.png'></image>
+  </block>
+  -->
   <!--
 <view class='huanbian' animation='{{forg1MoveData}}' style='bottom:{{H-W-4}}px;left:5px;opacity:0;'>
   <image mode='widthFix' style='width:10px;' src='{{forg1url}}'></image>
@@ -142,7 +201,7 @@
 <view class='huanbian' animation='{{flowSlowMoveData}}' style='bottom:{{H-W-4}}px;right:5px;'>
   <image mode='widthFix' style='width:50px;' src='/images/bg-hb-right.png'></image>
 </view>
--->
+
   <view class='huanbian' animation='{{flowSlowMoveData}}' style='bottom:20px;right:10px;z-index:-2;'>
     <image mode='widthFix' style='width:30px;' src='/images/huaban-1.png'></image>
   </view>
@@ -166,32 +225,33 @@
   <view class='huanbian' animation='{{recodTimeDownAnimationData}}' style='left:50%;top:50%;opacity:0;z-index:4;'>
     <text style='color:#FF4F00;'>{{time}}</text>
   </view>
+            -->
+  <block wx:if='{{tipShow}}'>
+    <view class='book-flow-item' wx:if='{{!nothing && isApproved}}'  style='top:60px;left:0px;z-index:4;'  >
+      <image src='{{book.bookCover}}' style='border-radius: 50%;'></image> 
+      <!--<text style='margin-left:0px;margin-right:5px;'>{{book.bookName}}</text> -->
+    </view>
 
-  <view class='book-flow-item' wx:if='{{!nothing}}' catchtap='addBookFlow' style='top:{{W-60}}px;left:0px;z-index:4;' animation='{{animationBookFlowData}}'>
-    <image src='{{book.uploaderAvatar}}' style='border-radius: 50%;'></image>
-    <image src='/images/gift-7.png' style='margin-left:10px;'></image>
-    <text style='margin-left:-5px;'>+{{book.flows}}</text>
-  </view>
+    <view class='book-flow-item' wx:if='{{!nothing && isApproved}}' catchtap='addBookFlow' animation='{{animationBookFlowData}}'  style='height:30px;top:{{100}}px;left:0px;z-index:4; justify-content:flex-start; '>
+     <image style='width:30px;height:30px;'  src='/images/like-it.png'></image>       
+      <text style='font-weight: bold;text-align:center;'>{{book.flows}}</text>
+       <text style='font-size:13px;margin-right:5px;'>人喜欢</text>
+    </view>
 
-  <view class='book-flow-item' style='height:30px;width:30px;top:0px;left:0px;z-index:4;'>
-    <form report-submit bindsubmit='goHome'>
-      <view class='wrap-button' style='height:30px;width:30px;'>
-        <image style='height:20px;width:20px;' src='/images/home.png'></image>
-        <button style='height:30px;width:30px;' form-type='submit'></button>
-      </view>
-    </form>
-  </view>
+    <view class='book-flow-item' wx:if='{{!nothing && isApproved}}' catchtap='hideOrShow' style='height:30px;top:{{140}}px;left:0px;z-index:4; justify-content:flex-start; '>
+     <image style='width:30px;height:30px;'  src='/images/record-0.png'></image>       
+      <text style='font-weight: bold;text-align:center;'>{{book.readTimes}}</text>
+      <text style='font-size:13px;'>人朗读</text>
+      <image catchtap='hideOrShow' style='height:30px;width:30px;transition:transform 1000ms ease 0ms;transform:rotate(180deg);transform-origin:50% 50% 0px;' src='/images/arrow.png'></image>
+    </view>
+  </block>
 
-  <view class='book-flow-item' style='height:30px;width:30px;top:0px;right:0px;z-index:4;'>
-    <form report-submit bindsubmit='reflush'>
-      <view class='wrap-button' style='height:30px;width:30px;'>
-        <image style='height:20px;width:20px;' src='/images/reflush_2.png'></image>
-        <button style='height:30px;width:30px;' form-type='submit'></button>
-      </view>
-    </form>
-  </view>
-
-  <view class='book-flow-item' wx:if='{{userId==book.uploaderUid}}' style='top:{{W-20}}px;right:25px;z-index:4;width:20px;'>
+  <block wx:else>
+    <view class='floatIcon' catchtap='hideOrShow' wx:if='{{!nothing && isApproved}}' style='top:{{130}}px;left:-10px;z-index:4; justify-content:flex-start; '>
+      <image style='height:30px;width:30px;' src='/images/arrow.png'></image>
+    </view>
+  </block>
+  <view class='book-flow-item' wx:if='{{userId==book.uploaderUid}}' style='top:{{W-30}}px;right:10px;z-index:4;width:20px;background: rgba(255, 255, 255, 0);'>
     <form report-submit bindsubmit='editBook' data-bookid='{{book.id}}'>
       <view class='wrap-button'>
         <image style='height:20px;width:20px;' src='/images/edit.png'></image>
@@ -199,14 +259,7 @@
       </view>
     </form>
   </view>
-
-  <view class='book-flow-item' style='top:{{W-17}}px;left:25px;z-index:4;width:100px;'>
-    <view class='wrap-button' style='width:auto;'>
-      <image style='height:30px;width:30px;' src='/images/zf-red.png'></image>
-      <button open-type='share' plain='{{true}}'></button>
-    </view>
-  </view>
-
+  <!--
   <view class='button-play-music'>
     <image wx:if='{{music.play}}' catchtap='stopMusic' src='/images/playing.png'></image>
     <image wx:else catchtap='playMusic' src='/images/play.png'></image>
@@ -221,8 +274,15 @@
         <view class='musicSound' style='left: 100px;transform:scaleY({{musicSoundScaleY7}});'></view>
       </block>
       <text wx:if='{{music.replay}}' style='position: absolute;right:30px;top:10px;'>加载中...</text>
-      <autocompleteadv wx:if='{{music && music.musicsList && music.musicsList.length > 0 }}' required style='width:{{W-40}}px;' bind:item-selected='selectedMusic' selectedId='{{music.selectedId}}' type='static' source='{{music.musicsList}}'></autocompleteadv>
-
-    </view>
+      <autocompleteadv wx:if='{{music && music.musicsList && music.musicsList.length > 0 }}' required style='width:{{W-40}}px;' bind:item-selected='selectedMusic' selectedId='{{music.selectedId}}' type='static' source='{{music.musicsList}}'></autocompleteadv> 
+    </view> 
   </view>
+    -->
+</view>
+
+<!--放在最后，保证事件不被拦截-->
+
+<view class='top'>
+  <fbutton extImgStyle='height:25px;width:25px;' extStyle='width:30px;' adv='true' formType='submit' buttonImage='/images/back.png' buttonText='' bind:fbutton-tap='goBack' />
+  <text class='top-title'>{{book.bookName}}</text>
 </view>

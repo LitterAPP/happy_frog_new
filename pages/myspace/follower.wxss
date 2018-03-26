@@ -1,0 +1,40 @@
+/* pages/myspace/follower.wxss */
+.scroll-item{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px 10px;
+}
+.scroll-item-1{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+}
+.scroll-item-1-1{
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  align-items: flex-start;
+  border-bottom: 1px solid #F8F8FF;
+  justify-content:  center;
+  height: 52px;  
+}
+.scroll-item image{
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+.scroll-item-1-1 text{
+  max-width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+  margin-left: 5px;
+}

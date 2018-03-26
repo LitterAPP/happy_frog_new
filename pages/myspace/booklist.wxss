@@ -1,0 +1,12 @@
+@import 'follower.wxss';
+
+.scroll-item image{
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+.scroll-item-1-1{
+  height: 85px;
+}

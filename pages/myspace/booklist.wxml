@@ -1,0 +1,32 @@
+<view class='topPlaceHolder'>
+</view>
+
+<scroll-view scroll-y style="height: {{H-80}};">
+  <view class='scroll-item' wx:for='{{list}}' wx:key='{{id}}' >
+    <view class='scroll-item-1' data-readid='{{item.readId}}'  data-bookid='{{item.id}}' catchtap='go'>
+      <image src='{{item.bookCover}}'></image>
+      <view class='scroll-item-1-1' style='width:{{W-180}}px;'>
+        <text>{{item.bookName}}</text>
+        <text style='font-size:14px;color:#666;'>{{item.time}}</text>
+      </view>
+    </view>
+    <fbutton data-readid='{{item.readId}}'  data-bookid='{{item.id}}' extStyle='margin-left:5px;height:25px;line-height:25px;width:45px;border-radius:5px;'  buttonText='前往' bind:fbutton-tap='go' formType='submit' />    
+  </view>
+
+  <view class='nomoredata'>
+    <fbutton wx:if='{{!nomore && !loading && !nodatas}}' extStyle='background:rgba(0,0,0,0);color:#888;width:200px;' bind:fbutton-tap='moreListData' formType='submit' buttonText='点击查看更多' />
+    <text wx:if='{{loading}}'>加载中...</text>
+    <text wx:if='{{nomore}}'>没有更多了</text>
+    <text wx:if='{{nodatas}}'>您还没有粉丝，赶紧朗读分享给好友吧~</text>
+  </view>
+</scroll-view>
+
+<view class='top' style='background:rgba(255, 255, 255, 1);'>
+  <fbutton extImgStyle='height:25px;width:25px;' extStyle='width:30px;' adv='true' formType='submit' buttonImage='/images/back.png' buttonText='' bind:fbutton-tap='goBack' />
+  <text class='top-title'>
+   <block wx:if='{{flag==1}}'>我的朗读</block>
+    <block wx:if='{{flag==2}}'>我的收藏</block>
+     <block wx:if='{{flag==3}}'>我的足迹</block>
+     <block wx:if='{{flag==4}}'>Ta的朗读</block>
+  </text>
+</view>

@@ -1,0 +1,54 @@
+<view class='topPlaceHolder'>
+</view>
+<block wx:if='{{isApproved && pageshow}}'>
+  <swiper indicator-dots="{{indicatorDots}}" bindchange='swiperChanged'   current='{{swiperCurrent}}' style='width:{{W}}px;height:{{W}}px;'>
+    <block wx:for="{{shots}}" wx:key='{{id}}'>
+      <swiper-item>
+        <view class='wrap-swiper-item'>
+          <image mode='aspectFit' style='width:{{W}}px;height:{{W}}px;' src='{{item.pageShot}}'></image>
+          <text>{{item.pageNum}}/{{shots.length}}</text>
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
+  <scroll-view scroll-y  style="height:{{H-W-75-48}}px; background: #f6f6f7;border-top:1px solid #FFE1FF;" scroll-into-view='{{scrollToView}}'>
+  <block wx:for="{{shots}}" wx:key='{{id}}'>
+    <view id='scrollItem_{{index}}' wx:if='{{swiperCurrent == index}}' style='background:#ecfae0;' class='scroll-item' >
+      <text>{{index+1}}/{{shots.length}}</text>
+      <view class='scroll-item-1'  data-idx='{{index}}' catchtap='record'>
+        <progress  style='width:{{W-150}}px;' percent="{{item.percent}}" stroke-width="2" activeColor="#40d37a" />
+        <text>{{item.readTime}}s</text>
+      </view>
+      <view class='scroll-item-1' style=' width: 70px;'>
+        <fbutton  extStyle='width:30px;' data-idx='{{index}}' bind:fbutton-tap='play' buttonText='' wx:if='{{item.recorded && !item.play}}' data-url='{{item.recordInfo.tempFilePath}}' adv buttonImage='/images/play-11.png' />
+        <fbutton  extStyle='width:30px;' data-idx='{{index}}' bind:fbutton-tap='stop' buttonText='' wx:if='{{item.recorded && item.play}}' data-url='{{item.recordInfo.tempFilePath}}' adv buttonImage='/images/pause.png' />
+
+        <fbutton  extStyle='width:30px;' data-idx='{{index}}' bind:fbutton-tap='record' buttonText='' wx:if='{{!item.record}}' adv buttonImage='/images/record-1.png' />
+        <fbutton  extStyle='width:30px;' data-idx='{{index}}' bind:fbutton-tap='record' buttonText='' wx:else adv buttonImage='/images/record-0.png' />
+      </view>
+    </view>
+    <view id='scrollItem_{{index}}' wx:else style='' class='scroll-item'>
+      <text>{{index+1}}/{{shots.length}}</text>
+      <view class='scroll-item-1'  data-idx='{{index}}' catchtap='record'>
+        <progress  style='width:{{W-150}}px;' percent="{{item.percent}}" stroke-width="2" activeColor="#40d37a" />
+        <text>{{item.readTime}}s</text>
+      </view>
+      <view class='scroll-item-1' style=' width: 70px;'>
+        <fbutton  extStyle='width:30px;' data-idx='{{index}}' bind:fbutton-tap='play' buttonText='' wx:if='{{item.recorded && !item.play}}' data-url='{{item.recordInfo.tempFilePath}}' adv buttonImage='/images/play-11.png' />
+        <fbutton  extStyle='width:30px;' data-idx='{{index}}' bind:fbutton-tap='stop' buttonText='' wx:if='{{item.recorded && item.play}}' data-url='{{item.recordInfo.tempFilePath}}' adv buttonImage='/images/pause.png' />
+        <fbutton  extStyle='width:30px;' data-idx='{{index}}' bind:fbutton-tap='record' buttonText='' wx:if='{{!item.record}}' adv buttonImage='/images/record-1.png' />
+        <fbutton  extStyle='width:30px;' data-idx='{{index}}' bind:fbutton-tap='record' buttonText='' wx:else adv  buttonImage='/images/record-0.png' />
+      </view>
+    </view>
+    </block>
+  </scroll-view>
+  <view class='fix-bottom' style='height:48px;justify-content:center;'>
+    <fbutton extStyle='width:80px;background:#1296db;' buttonText='预听我的声音' bind:fbutton-tap='previewVoid' />
+    <fbutton extStyle='width:80px;' buttonText='上传我的朗读' bind:fbutton-tap='uploadVoice' /> 
+  </view>
+</block>
+<!--放在最后，保证事件不被拦截-->
+<view class='top'>
+  <fbutton extImgStyle='height:25px;width:25px;' extStyle='width:30px;' adv='true' formType='submit' buttonImage='/images/back.png' buttonText='' bind:fbutton-tap='goBack' />
+  <text class='top-title'>朗读《{{book.bookName}}》</text>
+</view>

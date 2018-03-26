@@ -2,7 +2,7 @@ import Upload from '../../utils/upload.js'
 const util = require('../../utils/util.js')
 const backgroundMusic = require('../../utils/backgroundMusic.js')
 const app = getApp()
-var covers, shots
+var covers, shots,bookName
 
 var soundScale1, soundScale2, soundScale3, soundScale4, soundScale5, soundScale6, soundScale7
 Page({
@@ -12,6 +12,19 @@ Page({
   data: {
 
   },
+  goHome:function(e){
+    console.log('goHome', e)
+    util.GET(app.globalData.host + '/FormId/collect',
+      {
+        session: wx.getStorageSync('session'),
+        appId: app.globalData.appid,
+        formId: e.detail.formId
+      }, function () {
+        wx.redirectTo({
+          url: '/pages/list/list',
+        })
+      })
+  },
   coverImgChanged: function (e) {
     console.log(e.detail)
     covers = e.detail
@@ -19,6 +32,10 @@ Page({
   shotsImgChanged: function (e) {
     console.log(e.detail)
     shots = e.detail
+  },
+  getBookName:function(e){
+    bookName = e.detail.value
+    console.log('bookName===>',bookName)
   },
   formSumbit: function (e) {
     var that = this
@@ -46,12 +63,14 @@ Page({
     }
 
     var shotFiles = []
+    var wordCounts = []
     for (let i in shots) {
       if (!shots[i].logo || shots[i].logo.length == 0) {
         util.showToast('截图不存在', 'error')
         return
       }
       shotFiles.push(shots[i].logo)
+      wordCounts.push(shots[i].wordCount)
     }
 
     var uploadUrl = app.globalData.host + '/Upload/uploadFile'
@@ -73,6 +92,7 @@ Page({
             bookName: bookName,
             bookCover: bookCover,
             shots: shots,
+            wordCounts: wordCounts.join(','),
             bookId: that.data.bookId,
             musicId: music.musicOrginList[music.selectedId].id
           }, function (res) {

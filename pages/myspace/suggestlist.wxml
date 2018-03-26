@@ -1,0 +1,34 @@
+<view class='topPlaceHolder'>
+</view>
+
+<scroll-view scroll-y style="height: {{H-80}};">
+  <view class='scroll-item' wx:for='{{list}}' wx:key='{{id}}'>
+    <view class='user-info'>
+      <image class='avatar' src='{{item.avatar}}'></image>
+      <text style='color:#515151;font-size:15px;'>{{item.nickName}}</text>
+      <text style='color:#888;font-size:13px;'>{{item.commitTime}}</text>
+    </view>
+    <text style='color:#888;font-size:13px;'>内容</text>
+    <text>{{item.content}}</text>
+    <text style='color:#888;font-size:13px;' wx:if='{{item.img}}'>图片</text>
+    <image mode='aspectFit' style='height:{{60}}px;'  data-url='{{item.img}}' catchtap='previewImg' wx:if='{{item.img}}' src='{{item.img}}'></image>
+
+    <text wx:if='{{item.isReplay==1}}' style='color:#888;font-size:13px;'>已回复({{item.replayTime}})</text>
+    <text wx:if='{{item.isReplay==1}}'>{{item.replayContent}}</text>
+    <input  data-idx='{{index}}' value='{{item.replayContentTmp}}' placeholder='输入回复内容' bindinput='getReplayContent'></input>
+    <fbutton data-idx='{{index}}' data-id='{{item.id}}' data-content='{{item.replayContentTmp}}' extStyle='margin-left:5px;height:25px;line-height:25px;width:45px;border-radius:5px;'  buttonText='回复Ta'  data- bind:fbutton-tap='replay' formType='submit' />
+  </view>
+  
+
+  <view class='nomoredata'>
+    <fbutton wx:if='{{!nomore && !loading && !nodatas}}' extStyle='background:rgba(0,0,0,0);color:#888;width:200px;' bind:fbutton-tap='moreListData' formType='submit' buttonText='点击查看更多' />
+    <text wx:if='{{loading}}'>加载中...</text>
+    <text wx:if='{{nomore}}'>没有更多了</text>
+    <text wx:if='{{nodatas}}'>没有反馈~</text>
+  </view>
+</scroll-view>
+
+<view class='top' style='background:#fff;'>
+  <fbutton extImgStyle='height:25px;width:25px;' extStyle='width:30px;' adv='true' formType='submit' buttonImage='/images/back.png' buttonText='' bind:fbutton-tap='goBack' />
+  <text class='top-title'>反馈回复</text>
+</view>

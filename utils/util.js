@@ -115,6 +115,16 @@ function showWindow(title, content, showCancel, confirmFun, cancelFun) {
   });
 }
 
+function isApproved(callback){
+  GET(app.globalData.host + '/Version/isApproved', { version: app.globalData.version},function(res){
+      if(res && res.code == 1 && res.data){
+        callback(true)
+      }else{
+        callback(false)
+      }
+  })
+}
+
 function GET(url, data, callback) {
   /*wx.showLoading({
     title: '请稍后...',
@@ -601,5 +611,6 @@ module.exports = {
   checkLogin: checkLogin,
   showToast: showToast,
   isMobile: isMobile,
-  uploadFiles:uploadFiles
+  uploadFiles:uploadFiles,
+  isApproved: isApproved
 }

@@ -19,7 +19,8 @@ Component({
       type: Number,
       value: 1
     },
-    admin:Boolean
+    admin:Boolean,
+    subTitle:{type:Boolean,value:false}
   },
 
   /**
@@ -83,6 +84,15 @@ Component({
       copys.push({ remoteUrl: '', logo: '' })
       this.setData({ groups: copys })
       var that = this
+      var myEventDetail = that.data.groups
+      var myEventOption = {} // 触发事件的选项 
+      that.triggerEvent('item-changed', myEventDetail, myEventOption)
+    },
+    wordCountInput:function(e){
+      var idx = e.currentTarget.dataset.idx 
+      var that = this
+      var iput = e.detail.value
+      that.data.groups[idx]['wordCount']=iput
       var myEventDetail = that.data.groups
       var myEventOption = {} // 触发事件的选项 
       that.triggerEvent('item-changed', myEventDetail, myEventOption)

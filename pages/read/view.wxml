@@ -1,0 +1,89 @@
+<view class='topPlaceHolder'>
+</view>
+<block wx:if='{{isApproved && pageshow}}'>
+  <swiper indicator-dots="{{indicatorDots}}" current='{{swiperCurrent}}' bindchange='itemChange' style='width:{{W}}px;height:{{W}}px;'>
+    <block wx:for="{{readerInfo.shots}}" wx:key='{{id}}'>
+      <swiper-item>
+        <view class='wrap-swiper-item'>
+          <image mode='aspectFit' style='width:{{W}}px;height:{{W}}px;' src='{{item.pageShot}}'></image>
+          <text>{{item.pageNum}}/{{readerInfo.shots.length}}</text>
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
+
+  <image  wx:if='{{showReplayButton}}' catchtap='replay' style='height:50px;width:50px;position: absolute;top:{{W}}px;left:5px;' src='/images/play-11.png'></image>
+  <block wx:if='{{tipShow}}'>
+    <view class='book-flow-item' wx:if='{{!nothing && isApproved}}' style='height:100px;top:{{80}}px;left:0px;z-index:4; justify-content:flex-start; '>
+      <view class='reader-more-info-1'>
+        <view class='reader-more-info-1-1'>
+          <image src='{{readerInfo.readerAvatar}}' style='border-radius: 50%;'></image>
+          <text>{{readerInfo.readerName}}</text>
+          <fbutton animation='{{animationDataFollow}}' extStyle='margin-left:5px;height:25px;line-height:25px;width:45px;border-radius:5px;;'  wx:if='{{followStatus==0}}'   buttonText='关注Ta'   bind:fbutton-tap='followed' formType='submit'
+          />
+          <fbutton animation='{{animationDataFollow}}' extStyle='margin-left:5px;height:25px;line-height:25px;width:45px;border:1px solid #40d37a;background:rgba(255,255,255,0.5);color:#40d37a;border-radius:5px;'   wx:if='{{followStatus==1}}'  buttonText='已关注' bind:fbutton-tap='followed' formType='submit'
+          />
+        </view>
+        <fbutton adv='true' extStyle='margin-left:5px;height:30px;' extImgStyle='height:25px;width:25px;' buttonText='{{readerInfo.readerFlows}}' animation='{{animationDataFlow}}' buttonImage='/images/zan-1.png' catch:fbutton-tap='addFlow' />
+        <text>{{readerInfo.readerPlayTimes}}人收听</text>
+        <text>{{readerInfo.readTime}}</text>
+      </view>
+      <image catchtap='hideOrShow' style='height:30px;width:30px;transition:transform 1000ms ease 0ms;transform:rotate(180deg);transform-origin:50% 50% 0px;' src='/images/arrow.png'></image>
+    </view>
+  </block>
+  <block wx:else>
+    <view class='floatIcon' catchtap='hideOrShow' wx:if='{{!nothing && isApproved}}' style='top:{{130}}px;left:-10px;z-index:4; justify-content:flex-start; '>
+      <image style='height:30px;width:30px;' src='/images/arrow.png'></image>
+    </view>
+  </block>
+  <scroll-view scroll-y style="height:{{H-W-75-48}}px; background: #fff;" >   
+    <view class='scroll-item-comment' wx:for="{{comments}}" wx:key='{{id}}'>
+      <view class='scroll-item-comment-1'>
+        <image src='{{item.avatar}}'></image>
+        <text>{{item.nickName}}</text>
+      </view>
+      <view class='scroll-item-comment-2' style='width:{{W-80}}px;'>
+        <text style='font-size:10px;color:#888;'>{{item.time}}</text>
+        <text style='font-size:14px;color:#000;'>{{item.comments}}</text>
+        <block wx:for='{{item.replys}}' wx:key='{{id}}'>
+          <view class='scroll-item-comment-3' style='font-size:13px;color:#515151;'>
+          {{item.nickName}}回复：{{item.comments}}           
+          </view>
+        </block> 
+      </view>
+      <fbutton extStyle='font-size:11px;width:30px;background:#cdcdcd;' data-id='{{item.id}}' buttonText='回复' bind:fbutton-tap='commentReply' />
+    </view>
+    <view class='nomoredata'>
+           <fbutton wx:if='{{!nomore && !loading && !nodatas}}' extStyle='background:rgba(0,0,0,0);color:#888;width:200px;' bind:fbutton-tap='listMoreComment' formType='submit' buttonText='点击查看更多' />
+           <text wx:if='{{loading}}'>加载中...</text>
+           <text wx:if='{{nomore}}'>没有更多了</text>   
+           <text wx:if='{{nodatas}}'>还没任何评论，赶紧分享给好友评论吧</text>            
+    </view> 
+  </scroll-view>
+
+  <view class='fix-bottom' wx:if='{{!input}}' style='height:48px;'>
+    <fbutton extStyle='margin-left:5px;' adv='true' buttonImage='/images/comment.png' buttonText='评论({{comments.total?comments.total:0}})' bind:fbutton-tap='commentToast' />
+    <fbutton extStyle='width:140px;' data-bookid='{{readerInfo.bookId}}' buttonText='我也要朗读' bind:fbutton-tap='goToRead' />
+    <fbutton extStyle='margin-right:5px;' adv='true' openType='share' buttonImage='/images/share.png' buttonText='分享' />
+  </view>
+
+
+
+  <view class='comment-box-mask' wx:if='{{input}}'>
+    <view class='comment-box' style='width:{{W-20}}px;'>
+      <view class='comment-box-1'>
+        <fbutton extStyle='width:40px;background:#8a8a8a;' data-bookid='{{readerInfo.bookId}}' buttonText='取消' bind:fbutton-tap='commentCancel' />
+        <fbutton extStyle='width:40px;' data-bookid='{{readerInfo.bookId}}' buttonText='发送' bind:fbutton-tap='commentSend' />
+      </view>
+      <view class='comment-box-1'>
+        <textarea bindinput='commentInput' focus='{{input}}' style='width:{{W-10}}px;' placeholder='这是您的态度'>
+        </textarea>
+      </view>
+    </view>
+  </view>
+    <!--放在最后，保证事件不被拦截-->
+  <view class='top'>
+    <fbutton extImgStyle='height:25px;width:25px;' extStyle='width:30px;' adv='true' formType='submit' buttonImage='/images/back.png' buttonText='' bind:fbutton-tap='goBack' />
+    <text class='top-title'>{{readerInfo.readerName }}朗读《{{readerInfo.bookName}}》</text>
+  </view>
+</block>

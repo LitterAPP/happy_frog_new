@@ -1,0 +1,120 @@
+/* pages/myspace/index.wxss */
+
+.userinfo {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  background: #fff;
+}
+
+.userinfo-item {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+}
+
+.userinfo-item image {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+
+.userinfo-item text {
+  max-width: 100px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.box-container {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center; 
+}
+
+.box-1 {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: flex-start;  
+}
+
+.box-1-l {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;  
+  background: #40d37a;
+  justify-content: center; 
+  position: relative;
+}
+
+.box-1-l-1 {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center; 
+}
+
+.box-1-r {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;  
+}
+.box-1-r-1{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center; 
+  background: #40d37a;
+  justify-content: center;
+}
+
+.box-1-r-1-1{
+   display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+   justify-content: center;
+}
+
+.box-hover{
+  background: #EE7600;   
+}
+
+
+
+.box-1 image{
+  height: 40px;
+  width: 40px;
+}
+
+.box-1-l-1-1{
+  font-size: 16px;
+  color: #fff;  
+}
+.box-1-l-1-2{
+  font-size:13px;
+  color:#E0EEEE;
+}
+
+.red-dot{
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 50%;
+  background: #d81e06;
+  position: absolute;
+  top:5px;
+  right: 5px;
+  font-size: 10px;
+  color: #fff;
+}

@@ -21,6 +21,17 @@
    /*border-bottom: 1px dotted #188A00;*/
 }
 
+.rank-container{
+  position: absolute;  
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  align-items: flex-start; 
+  overflow:hidden;
+  white-space:  nowrap;
+   border-top: 5px solid #f6f6f7;
+}
+
 .record image {
   height: 50px;
   width: 50px;
@@ -104,15 +115,14 @@
 }
 
 .book-flow-item {
-  display: flex;
-  width: 100px;
+  display: flex;   
   flex-direction: row;
   align-items: center;
   align-content: center;
   justify-content: center;
   padding: 5px 2px;
   position: absolute;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.8);
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
 }
@@ -162,8 +172,6 @@
   align-content: flex-start;
   justify-content: center;
   position: absolute;
-  left: 50%;
-  top: 80px;
 }
 
 .play-time-item text {
@@ -200,10 +208,10 @@
 }
 .bookName text { 
   text-align: center; 
-  font-size: 16px;
+  font-size: 10px;
   color: #000;
-  height: 30px;
-  line-height: 30px;
+  height: 15px;
+  line-height: 15px;
   margin-right: 10px;
   /*background: rgba(24,138,0,0.5);*/ 
 }
@@ -230,3 +238,97 @@
   top: -10px; 
 }
 
+.bottom-info{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  align-self: center;
+  justify-content: space-between;
+}
+
+.scroll-item{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.scroll-item-left{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+}
+.scroll-item-left image{
+  height: 30px;
+  width: 30px;
+}
+.scroll-item-left text{
+  height: 30px;
+  width: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.scroll-item-right{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f6f6f7;
+}
+
+.scroll-item-user{
+   display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between; 
+}
+
+.scroll-item-user image{
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+.scroll-item-user-info{
+   display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  align-items: flex-start; 
+  position: relative;
+}
+.scroll-item text{
+  max-width: 150px;
+  overflow: hidden;
+  font-size: 11px; 
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.scroll-item-user-flows{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center; 
+}
+
+.scroll-item-user-flows image{
+  height: 30px;
+  width: 30px;
+}
+
+.scroll-item-flow{
+   display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between; 
+}
