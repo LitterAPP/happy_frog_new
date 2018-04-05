@@ -1,0 +1,57 @@
+<view class='top' style='z-index:99;'>
+  <fbutton extImgStyle='height:25px;width:25px;' extStyle='width:30px;' adv='true' formType='submit' buttonImage='/images/back.png' buttonText='' bind:fbutton-tap='goBack' />
+  <text class='top-title'>时刻</text>
+  <view wx:if='{{isApproved}}' class='tool-bar' style='width:{{W-50-70}}px;'>
+
+    <fbutton wx:if='{{bar==1}}' adv buttonImage='/images/tj-1.png' extImgStyle='height:25px;width:25px;' formType='submit' buttonText='推荐' data-bar='1' bind:fbutton-tap='barSelect' textStyle='font-size:16px;color:#000;' extStyle='margin-left:10px;width:65px;height:30px;line-height:30px;border-right:1px solid #E6E6FA;'
+    />
+    <fbutton wx:else adv buttonImage='/images/tj-0.png' extImgStyle='height:25px;width:25px;' formType='submit' buttonText='推荐' data-bar='1' bind:fbutton-tap='barSelect' textStyle='font-size:16px;color:#000;' extStyle='margin-left:10px;width:65px;height:30px;line-height:30px;border-right:1px solid #E6E6FA;'
+    />
+
+    <fbutton wx:if='{{bar==2}}' adv buttonImage='/images/dt-1.png' extImgStyle='height:25px;width:25px;' formType='submit' buttonText='时刻' data-bar='2' bind:fbutton-tap='barSelect' textStyle='font-size:16px;color:#000;' extStyle='margin-left:8px;width:65px;height:30px;line-height:30px;'
+    />
+    <fbutton wx:else adv buttonImage='/images/dt-0.png' extImgStyle='height:25px;width:25px;' formType='submit' buttonText='时刻' data-bar='2' bind:fbutton-tap='barSelect' textStyle='font-size:16px;color:#000;' extStyle='margin-left:8px;width:65px;height:30px;line-height:30px;'
+    />
+  </view>
+</view>
+
+<scroll-view enable-back-to-top  scroll-with-animation scroll-y  bindscrolltoupper='reflush' bindscrolltolower='listMoreDatas' style="margin-top:75px;height:{{H-75}}px; background: #fff;">
+  <view class='nomoredata' wx:if='{{reloading}}'>
+    <text wx:if='{{reloading}}'>刷新中...</text>
+  </view>
+  <view class='m-item' hover-class='hover-class' catchtap='goDetail'  data-bookid='{{item.id}}'  wx:for='{{list}}' wx:key='{{id}}'>
+    <view class='m-item-avatar' style='width:50px;'>
+      <image src='{{item.uploaderAvatar}}'></image>
+    </view>
+    <view class='m-item-content' style='width:{{W-50}}px;'>
+      <text class='m-item-content-nickname'>{{item.uploaderNickname}}</text>
+      <text class='m-item-content-title'>{{item.bookName}}</text>
+      <image mode='aspectFill' src='{{item.bookCover}}'></image>
+      <text class='m-item-content-time'>{{item.createDateDesc}}</text>
+      <view class='m-item-content-other' style='width:{{W-70}}px;'>
+        <view class='m-item-content-other-1'>
+          <image src='/images/zan-0.png'></image>
+          <text>{{item.flows}}</text>
+        </view>
+        <view class='m-item-content-other-1'>
+          <image src='/images/record-0.png'></image>
+          <text>{{item.recordNumber}}</text>
+        </view>
+      </view>
+      
+    </view>
+  </view>
+
+  <view class='nomoredata'>
+    <!---
+    <fbutton wx:if='{{!reloading && !nomore && !loading && !nodatas}}' extStyle='background:rgba(0,0,0,0);color:#888;width:200px;' bind:fbutton-tap='listMoreComment' formType='submit' buttonText='点击查看更多' />
+    -->
+    <text wx:if='{{loading}}'>加载中...</text>
+    <text wx:if='{{nomore}}'>没有更多了</text>
+    <text wx:if='{{nodatas}}'>暂无用户时刻，去发一个吧</text>
+  </view>
+</scroll-view>
+
+
+ <fbutton  class='addComment' extImgStyle='height:25px;width:25px;' extStyle='width:30px;' adv='true' formType='submit' buttonImage='/images/add-1.png' buttonText='' bind:fbutton-tap='goSendMoment' />
+ 

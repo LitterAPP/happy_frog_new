@@ -3,7 +3,6 @@
     "pages/list/list",
     "pages/index/index",
     "pages/color/color",
-    "pages/create/create",
     "pages/tmp/index",
     "pages/read/read",
     "pages/read/view",
@@ -16,7 +15,9 @@
     "pages/myspace/totalrank",
     "pages/myspace/followed",
     "pages/myspace/suggest",
-    "pages/myspace/suggestlist"
+    "pages/myspace/suggestlist",
+    "pages/create/moment",
+    "pages/moments/list"
   ],
   "subPackages": [
     {
@@ -36,7 +37,7 @@
     "navigationStyle": "custom"
   },
   "networkTimeout": {
-    "request": 60000,
-    "downloadFile": 10000
+    "request": 10000,
+    "downloadFile": 15000
   }
 }

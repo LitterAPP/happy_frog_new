@@ -132,6 +132,7 @@ Page({
               }
               shots[i]['DEG'] = deg;
             }
+            
             that.setData(
               {
                 userId: wx.getStorageSync('userinfo').id,
@@ -141,6 +142,22 @@ Page({
                 shareRecord: res.data.shareRecord || null,
                 pageshow: true
               })
+
+             if(that.data.book.type==1){
+               that.setData({typeDesc:'朗读'})
+             }
+             if (that.data.book.type == 2) {
+               that.setData({ typeDesc: '讲故事' })
+             }
+             if (that.data.book.type == 3) {
+               that.setData({ typeDesc: '解题' })
+             }
+             if (that.data.book.type == 4) {
+               that.setData({ typeDesc: '关心Ta' })
+             }
+             if (that.data.book.type == 5) {
+               that.setData({ typeDesc: '辩论' })
+             }
             //优先显示分享人的录音，默认显示自己的录音
             if (that.data.shareRecord) {
               that.setData({ selfRecord: that.data.shareRecord, card: -1, scrollHeight: H - W })

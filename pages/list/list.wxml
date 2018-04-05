@@ -1,13 +1,12 @@
-<view class='top'>
-  <text class='top-title'>小青蛙推荐</text>
-</view>
+
 <view wx:if='{{pageshow}}' class='container' style='width:{{W}}px;height:{{H}}px;'>
+
   <block wx:for='{{list}}' wx:key='id'>
-    <view style='z-index:{{item.zindex}}; border:1px solid #ccc;width:{{ItemW}}px;height:{{ItemW+30}}px;transition:transform 1000ms ease 0ms;transform:translate({{item.X}}px, {{item.Y}}px) rotate({{item.DEG}}deg);transform-origin:35% 60% 0px;' class='list-item'
+    <view style='z-index:{{item.zindex}}; border:1px solid #ccc;width:{{ItemW}}px;height:{{ItemW+40}}px;transition:transform 1000ms ease 0ms;transform:translate({{item.X}}px, {{item.Y}}px) rotate({{item.DEG}}deg);transform-origin:35% 60% 0px;' class='list-item'
       data-bookid='{{item.id}}' data-idx='{{index}}' catchtouchstart='moveItemStart' catchtouchend='movingItem'>
       <image mode='aspectFit' data-bookid='{{item.id}}' style='width:{{ItemW}}px;height:{{ItemW}}px;' src='{{item.bookCover}}'></image>
       <text class='bookName' style='width:{{ItemW-9}}px;'>{{item.bookName}}</text>
-      <text class='updateTime'>{{item.createDate}}</text>
+      <text class='updateTime'>{{item.createDateDesc}}</text>
       <view class='recordNumber' wx:if='{{isApproved}}'>
         <image style='width:30px;height:30px;' src='/images/record-0.png'></image>
         <text>{{item.recordNumber}}</text>
@@ -162,7 +161,19 @@
 
 <view class='myspace' wx:if='{{isApproved}}' catchtap='goToMySpace'>
   <image src='{{userinfo.avatarUrl}}'></image> 
-</view>
-<text style='position: absolute;top: 85px;left: 5px;'  catchtap='goCreate' wx:if='{{userinfo.id==1789}}'>创建读本</text> 
+</view> 
 
-  
+ <fbutton  wx:if='{{isApproved}}' class='addComment' extImgStyle='height:25px;width:25px;' extStyle='width:70px;' adv='true' formType='submit' buttonImage='/images/add-1.png' buttonText='发动态' bind:fbutton-tap='goSendMoment' />
+
+
+ <view class='top' >
+  <text class='top-title'>小青蛙</text>
+    <view  wx:if='{{isApproved}}' class='tool-bar' style='width:{{W-50-70}}px;'>     
+     <fbutton  wx:if='{{bar==1}}'  adv buttonImage='/images/tj-1.png' extImgStyle='height:25px;width:25px;' formType='submit' buttonText='推荐' data-bar='1' bind:fbutton-tap='barSelect' textStyle='font-size:16px;color:#000;' extStyle='margin-left:10px;width:65px;height:30px;line-height:30px;border-right:1px solid #E6E6FA;' />
+      <fbutton  wx:else  adv buttonImage='/images/tj-0.png' extImgStyle='height:25px;width:25px;' formType='submit' buttonText='推荐' data-bar='1' bind:fbutton-tap='barSelect' textStyle='font-size:16px;color:#000;' extStyle='margin-left:10px;width:65px;height:30px;line-height:30px;border-right:1px solid #E6E6FA;' />
+
+      <fbutton  wx:if='{{bar==2}}' adv buttonImage='/images/dt-1.png' extImgStyle='height:25px;width:25px;' formType='submit' buttonText='时刻' data-bar='2' bind:fbutton-tap='barSelect' textStyle='font-size:16px;color:#000;' extStyle='margin-left:8px;width:65px;height:30px;line-height:30px;' />
+       <fbutton  wx:else adv buttonImage='/images/dt-0.png' extImgStyle='height:25px;width:25px;' formType='submit' buttonText='时刻' data-bar='2' bind:fbutton-tap='barSelect' textStyle='font-size:16px;color:#000;' extStyle='margin-left:8px;width:65px;height:30px;line-height:30px;' />
+
+  </view>
+</view>

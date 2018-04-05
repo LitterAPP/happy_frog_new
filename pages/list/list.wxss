@@ -29,14 +29,19 @@
   /*background: rgba(24,138,0,0.5);*/
   background: #fff;
   line-height: 30px;
-  padding: 5px;    
+  padding: 5px;  
+
+  max-width: 200px;
+  overflow: hidden; 
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .updateTime{
   position: absolute;
   bottom: 40px;
   right: 0px;   
   font-size: 13px;
-  color: #ccc;     
+  color: #707070;     
   background: rgba(255, 255, 255, 0);
   border-radius: 3px;
   padding: 5px; 
@@ -184,4 +189,20 @@
   height: 20px;
   border-radius: 0;
   border:0px solid #fff;
+}
+
+.tool-bar{
+  display: flex; 
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+
+}
+
+
+.addComment{
+  position: fixed;
+  right: 5px;
+  bottom: 5px; 
 }

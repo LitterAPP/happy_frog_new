@@ -66,7 +66,7 @@ Page({
       that.setData({ swiperCurrent: preViewPayIndex, showReplayButton:false })
     })
     preViewInnerAudioContext.onStop(() => {
-
+      that.setData({ showReplayButton: true })
     })
     preViewInnerAudioContext.onEnded(() => {
       preViewPayIndex++
@@ -257,6 +257,7 @@ Page({
   },
   commentToast: function (e) {
     var that = this
+    preViewInnerAudioContext.stop()
     util.GET(app.globalData.host + '/FormId/collect',
       {
         session: wx.getStorageSync('session'),
@@ -356,10 +357,29 @@ Page({
           if (res && res.code == 1) {
             res.data.shots.reverse()
             that.setData({ readerInfo: res.data, pageshow: true })
+            
+
+            if (that.data.readerInfo.bookType == 1) {
+              that.setData({ typeDesc: '朗读' })
+            }
+            if (that.data.readerInfo.bookType == 2) {
+              that.setData({ typeDesc: '讲故事' })
+            }
+            if (that.data.readerInfo.bookType == 3) {
+              that.setData({ typeDesc: '解题' })
+            }
+            if (that.data.readerInfo.bookType == 4) {
+              that.setData({ typeDesc: '关心Ta' })
+            }
+            if (that.data.readerInfo.bookType == 5) {
+              that.setData({ typeDesc: '辩论' })
+            }
+
             that.preViewaudioListener()
             preViewPayIndex = 0
             preViewInnerAudioContext.src = that.data.readerInfo.shots[preViewPayIndex].voiceUrl
 
+            
             util.GET(app.globalData.host + '/Forg/getFollowStatus', {
               session: wx.getStorageSync('session'),
               followUserId: that.data.readerInfo.readUserId
@@ -401,8 +421,7 @@ Page({
     if (preViewInnerAudioContext){
       preViewInnerAudioContext.stop()
       preViewInnerAudioContext.destroy()
-    }
-  
+    }  
   },
 
   /**
@@ -432,7 +451,7 @@ Page({
   onShareAppMessage: function () {
     var that = this
     return {
-      title: that.data.readerInfo.readerName + '朗诵了《' + that.data.readerInfo.bookName + '》,快来听听我的声音！',
+      title: that.data.readerInfo.readerName + '在《' + that.data.readerInfo.bookName + '》录音了,快来听听我的声音！',
       path: '/pages/read/view?readId=' + that.data.readerInfo.readId,
       success: function (res) {
         // 转发成功

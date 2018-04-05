@@ -3,7 +3,7 @@
     "uploadImg": "/comp/uploadImg",
     "fbutton": "/comp/formbutton/fbutton",
     "autocompleteadv": "/comp/autocomplete/autocompleteadv"
-  },  
+  },
   "backgroundTextStyle": "light",
   "navigationBarBackgroundColor": "#fff",
   "navigationBarTitleText": "创作读本",

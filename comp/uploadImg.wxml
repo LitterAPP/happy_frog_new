@@ -7,6 +7,7 @@
         <button catchtap='deleteLogo' data-index='{{index}}' wx:if='{{admin && !deleteImgSrc}}' class='deletebtn' size='min' type='warn'>删除</button>
         <text class='infoText'>{{index+1}}/{{max}}</text>
         <input wx:if='{{subTitle}}' data-idx='{{index}}' bindinput='wordCountInput' type='number' placeholder='请输入字数'></input>
+        <input wx:if='{{memo}}'  style='border-bottom:1px solid #707070;' data-idx='{{index}}' bindinput='memoInput' type='text' placeholder='备注'></input>
       </view> 
     </view> 
     <!---

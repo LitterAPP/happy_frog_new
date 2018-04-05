@@ -30,7 +30,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 6,
 			"list": [
 				{
 					"id": -1,
@@ -74,22 +74,16 @@
 					"query": "readId=368"
 				},
 				{
-					"id": -1,
+					"id": 6,
 					"name": "我要朗读",
 					"pathName": "pages/read/read",
-					"query": "bookId=57"
+					"query": "bookId=159"
 				},
 				{
 					"id": -1,
 					"name": "createBook",
 					"pathName": "pages/create/create",
 					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "个人设置中心",
-					"pathName": "pages/myspace/index",
-					"query": "readId=365"
 				},
 				{
 					"id": -1,
@@ -131,6 +125,18 @@
 					"id": -1,
 					"name": "反馈回复",
 					"pathName": "pages/myspace/suggestlist",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "moment",
+					"pathName": "pages/create/moment",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "moment-list",
+					"pathName": "pages/moments/list",
 					"query": ""
 				}
 			]

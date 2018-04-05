@@ -1,11 +1,23 @@
-<!--pages/create/create.wxml-->
 <form wx:if='{{pageshow}}' bindsubmit='formSumbit' report-submit>
-  <view class='card' style='margin-top:75px;'>
-    <view class='card-title'>读本名称</view>
+  <view class='card' style='margin-top:85px;'>
+    <view class='card-title'>此刻的想法</view>
     <view class='card-content'>
-      <input style='width:{{W}}px' name='bookName' value='{{bookName}}' type='text' maxlength='200' placeholder='请输入读本名称' bindblur='getBookName'></input>
+      <input style='width:{{W}}px' name='moment' value='{{moment}}' type='text' maxlength='200' placeholder='此刻的想法...'></input>
     </view>
   </view>
+  <view class='card'>
+    <view class='card-title'>动态类型</view>
+    <view class='card-content'>
+      <picker style='width:100%;'  bindchange="bindPickerChange" value="{{typeIndex}}" range="{{typeList}}">
+        <view style='margin:0px 10px;height:35px;line-height:35px;width:100%;font-weight:blod;'>
+          {{typeList[typeIndex]}}
+        </view>
+      </picker>
+    </view>
+  </view>
+
+
+  <!--
   <view class='card'>
     <view class='card-title'>背景音乐</view>
     <view class='card-content'>
@@ -24,30 +36,30 @@
           </block>
           <text wx:if='{{music.replay}}' style='position: absolute;right:30px;top:10px;'>加载中...</text>
           <autocompleteadv wx:if='{{music && music.musicsList && music.musicsList.length > 0 }}' required style='width:{{W-40}}px;' bind:item-selected='selectedMusic' selectedId='{{music.selectedId}}' type='static' source='{{music.musicsList}}'></autocompleteadv>
-
         </view>
       </view>
     </view>
   </view>
+  -->
+  <!--
   <view class='card'>
     <view class='card-title'>读本封面</view>
     <view class='card-content'>
       <uploadImg h='{{W}}' deleteImgSrc='/images/clean.png' groups='{{covers}}' admin w='{{W}}' max='1' uploadButtonText='上传封面({{W}}x{{W}})'  bind:item-changed='coverImgChanged'></uploadImg>
     </view>
-  </view>
+  </view>-->
   <view class='card'>
-    <view class='card-title'>读本内容图片(最多30张)</view>
+    <view class='card-title'>照片(最多10张)</view>
     <view class='card-content'>
-      <uploadImg h='{{W}}' subTitle  deleteImgSrc='/images/clean.png' groups='{{shots}}' admin w='{{W}}' max='30' uploadButtonText='上传读本图片({{W}}x{{W}})' bind:item-changed='shotsImgChanged'></uploadImg>
+      <uploadImg h='{{W}}' memo deleteImgSrc='/images/clean.png' groups='{{shots}}' admin w='{{W}}' max='10' uploadButtonText='点击添加照片({{W}}x{{W}})' bind:item-changed='momentImgChanged'></uploadImg>
     </view>
   </view>
-
   <view class='blank'></view>
   <view class='fix-bottom' style='justify-content: center;'>
-    <button form-type='submit' >提交</button>
+    <button form-type='submit' type='primary' style='border-radius:20px;height:35px;line-height:35px;font-size:14px;'>发表</button>
   </view>
 </form>
-<view class='top'>
-  <fbutton extImgStyle='height:25px;width:25px;' extStyle='width:30px;' adv='true' formType='submit' buttonImage='/images/home.png' buttonText='' bind:fbutton-tap='goHome' />
-  <text class='top-title'>创建读本</text>
-</view> 
+<view class='top' style='background:#fff;'>
+  <fbutton extImgStyle='height:25px;width:25px;' extStyle='width:30px;' adv='true' formType='submit' buttonImage='/images/back.png' buttonText='' bind:fbutton-tap='goBack' />
+  <text class='top-title'>发动态</text>
+</view>

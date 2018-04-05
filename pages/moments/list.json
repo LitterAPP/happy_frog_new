@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "autocompleteadv": "/comp/autocomplete/autocompleteadv",
+    "fbutton": "/comp/formbutton/fbutton"
+  }
+}

@@ -1,8 +1,9 @@
 import Upload from '../../utils/upload.js'
 const util = require('../../utils/util.js')
-const backgroundMusic = require('../../utils/backgroundMusic.js')
+
 const app = getApp()
-var covers, shots,bookName
+var momentImgs, moment
+var covers=[]
 
 var soundScale1, soundScale2, soundScale3, soundScale4, soundScale5, soundScale6, soundScale7
 Page({
@@ -10,36 +11,46 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    typeIndex:3,
+    typeList: ['故事读物','看图说话', '求教解题','我的心情']
   },
-  goHome:function(e){
-    console.log('goHome', e)
+  bindPickerChange:function(e){   
+    var that = this
+    that.setData({ typeIndex : e.detail.value})
+  },
+  goBack: function (e) {
+    var that = this
     util.GET(app.globalData.host + '/FormId/collect',
       {
         session: wx.getStorageSync('session'),
         appId: app.globalData.appid,
         formId: e.detail.formId
-      }, function () {
-        wx.redirectTo({
-          url: '/pages/list/list',
-        })
+      }, function () { })
+
+    let pages = getCurrentPages();
+    console.log('getCurrentPages', pages)
+    if (pages.length > 1) {
+      wx.navigateBack({
+        delta: 1
       })
+    } else {
+      wx.redirectTo({
+        url: '/pages/list/list',
+      })
+      /*
+      wx.switchTab({
+        url: '/pages/list/list',
+      })
+      */
+    }
   },
-  coverImgChanged: function (e) {
+  momentImgChanged: function (e) {
     console.log(e.detail)
-    covers = e.detail
-  },
-  shotsImgChanged: function (e) {
-    console.log(e.detail)
-    shots = e.detail
-  },
-  getBookName:function(e){
-    bookName = e.detail.value
-    console.log('bookName===>',bookName)
+    momentImgs = e.detail
   },
   formSumbit: function (e) {
     var that = this
-    let bookName = e.detail.value.bookName
+    moment = e.detail.value.moment
 
     util.GET(app.globalData.host + '/FormId/collect',
       {
@@ -49,28 +60,24 @@ Page({
       }, function () {
       })
 
-    if (!bookName || bookName.length === 0) {
-      util.showToast('书名为空', 'error')
+    if (!moment || moment.length === 0) {
+      util.showToast('您的想法很重要', 'info')
       return
     }
-    if (!covers || covers.length != 1 || !covers[0].logo) {
-      util.showToast('封面为空', 'error')
-      return
-    }
-    if (!shots || shots.length < 1) {
-      util.showToast('截图至少1张', 'error')
+    if (!momentImgs || momentImgs.length < 1) {
+      util.showToast('有图有真相', 'info')
       return
     }
 
     var shotFiles = []
-    var wordCounts = []
-    for (let i in shots) {
-      if (!shots[i].logo || shots[i].logo.length == 0) {
-        util.showToast('截图不存在', 'error')
+    var memos = []
+    for (let i in momentImgs) {
+      if (!momentImgs[i].logo || momentImgs[i].logo.length == 0) {
+        util.showToast('有图有真相', 'error')
         return
       }
-      shotFiles.push(shots[i].logo)
-      wordCounts.push(shots[i].wordCount)
+      shotFiles.push(momentImgs[i].logo)
+      memos.push(momentImgs[i].memo)
     }
 
     var uploadUrl = app.globalData.host + '/Upload/uploadFile'
@@ -79,60 +86,47 @@ Page({
       title: '保存中...',
       mask: true
     })
-    var music = wx.getStorageSync('music')
-    let coverUploadTask = new Upload([covers[0].logo])
-    coverUploadTask.upload(uploadUrl, function (keys0) {
-      let coverUploadTask = new Upload(shotFiles)
-      coverUploadTask.upload(uploadUrl, function (keys1) {
-        var bookCover = keys0[0]
-        var shots = keys1.join(',') 
-        util.GET(app.globalData.host + '/Forg/createBooks',
-          {
-            session: wx.getStorageSync('session'),
-            bookName: bookName,
-            bookCover: bookCover,
-            shots: shots,
-            wordCounts: wordCounts.join(','),
-            bookId: that.data.bookId,
-            musicId: music.musicOrginList[music.selectedId].id
-          }, function (res) {
-            if (res && res.code == 1) {
-              util.showToast('保存成功', 'success')
-              wx.redirectTo({
-                url: '/pages/index/index?bookId=' + res.data,
-              })
-            } else if (res.code == 1) {
-              util.showToast('保存失败', 'error')
-            }
-            setTimeout(function () { wx.hideLoading() }, 2000)
-          })
-      })
+    
+    let uploadTask = new Upload(shotFiles)
+    uploadTask.upload(uploadUrl, function (keys1) {      
+      var shotstr = keys1.join(',')
+      util.GET(app.globalData.host + '/Forg/createBooks',
+        {
+          session: wx.getStorageSync('session'),
+          bookName: moment,
+          shots: shotstr,
+          type: parseInt(that.data.typeIndex) + parseInt(1),
+          memos: memos.join(',')          
+        }, function (res) {
+          if (res && res.code == 1) {
+            util.showToast('发表成功', 'success')
+            wx.redirectTo({
+              url: '/pages/moments/list',
+            })
+          } else if (res.code == -1) {
+            util.showToast('发表失败', 'error')
+          }
+          setTimeout(function () { wx.hideLoading() }, 200)
+        })
     })
   },
-  stopMusic: function () {
-    backgroundMusic.stopMusic()
-  },
-  playMusic: function () {
-    backgroundMusic.playMusic()
-  },
+ 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that = this 
+    var that = this
     var bookId = options.bookId
     util.showToast('加载中...', 'info')
     util.checkLogin(false, function () {
       if (bookId) {
         util.GET(app.globalData.host + '/Forg/getBook', { session: wx.getStorageSync('session'), bookId: bookId }, function (res) {
-          if (res && res.code == 1) {
-            var covers = []
-            covers.push({ logo: '', remoteUrl: res.data.book.bookCover })
+          if (res && res.code == 1) { 
             var shots = []
             for (let i in res.data.shots) {
               shots.push({ logo: '', remoteUrl: res.data.shots[i].pageShot })
             }
-            that.setData({ W: wx.getSystemInfoSync().windowWidth, bookId: res.data.book.id, bookName: res.data.book.bookName, shots: shots, covers: covers, pageshow: true })
+            that.setData({ W: wx.getSystemInfoSync().windowWidth, bookId: res.data.book.id, bookName: res.data.book.bookName, shots: shots,  pageshow: true })
           }
           wx.hideLoading()
         })
@@ -144,6 +138,7 @@ Page({
     })
 
   },
+  /*
   linsternAudioEvent: function () {
     var that = this
     backgroundMusic.listener(function (music) {
@@ -153,7 +148,7 @@ Page({
   soundScale: function () {
     var that = this
     let count = 0
-    soundScale1 =  setInterval(function () {
+    soundScale1 = setInterval(function () {
       if (count % 2 == 0) {
         that.setData({ musicSoundScaleY1: Math.floor(Math.random() * 5 + 1) + 1 })
       } else {
@@ -215,7 +210,7 @@ Page({
     let musicIndx = e.detail.id
     if (!musicIndx) return
     backgroundMusic.playMusic(musicIndx)
-  },
+  },***/
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -224,27 +219,14 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    var that = this
-    backgroundMusic.instance(app.globalData.host + '/Forg/listMusic', function (music) {
-      that.setData({ music: music })
-      that.soundScale()
-      that.linsternAudioEvent()
-      backgroundMusic.autoPlayMusic()
-    }) 
+   
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-      console.log('clear interval')
-      clearInterval(soundScale1)
-      clearInterval(soundScale2)
-      clearInterval(soundScale3)
-      clearInterval(soundScale4)
-      clearInterval(soundScale5)
-      clearInterval(soundScale6)
-      clearInterval(soundScale7)
+    
   },
 
   /**

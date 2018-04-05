@@ -43,12 +43,12 @@
     </block>
   </scroll-view>
   <view class='fix-bottom' style='height:48px;justify-content:center;'>
-    <fbutton extStyle='width:80px;background:#1296db;' buttonText='预听我的声音' bind:fbutton-tap='previewVoid' />
-    <fbutton extStyle='width:80px;' buttonText='上传我的朗读' bind:fbutton-tap='uploadVoice' /> 
+    <fbutton extStyle='width:100px;background:#1296db;' buttonText='预览我的{{typeDesc}}' bind:fbutton-tap='previewVoid' />
+    <fbutton extStyle='width:100px;' buttonText='上传我的{{typeDesc}}' bind:fbutton-tap='uploadVoice' /> 
   </view>
 </block>
 <!--放在最后，保证事件不被拦截-->
 <view class='top'>
   <fbutton extImgStyle='height:25px;width:25px;' extStyle='width:30px;' adv='true' formType='submit' buttonImage='/images/back.png' buttonText='' bind:fbutton-tap='goBack' />
-  <text class='top-title'>朗读《{{book.bookName}}》</text>
+  <text class='top-title'>{{typeDesc}}《{{book.bookName}}》</text>
 </view>

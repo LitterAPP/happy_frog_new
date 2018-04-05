@@ -17,6 +17,10 @@ Component({
         type:String,
         value:'确定'
       },
+      textStyle:{
+        type: String,
+        value: '  font-size: 12px;color: #40d37a; text-align: left;'
+      },
       extImgStyle:{
         type: String,
         value: 'height:30px;width:30px;'

@@ -141,14 +141,15 @@ function GET(url, data, callback) {
     },
     complete: function (res) {
       console.log('GET', url, data, res)
-      //wx.hideNavigationBarLoading()
+      //
       if (res && res.statusCode == 200 && res.data) {
         typeof callback == "function" && callback(res.data);
       } else {
         showToast('网络不稳定，请稍后再试', 'error');
         typeof callback == "function" && callback(null)
       }
-      //wx.hideLoading()
+     // wx.hideLoading()
+     // wx.hideNavigationBarLoading()
     }
   })
 }

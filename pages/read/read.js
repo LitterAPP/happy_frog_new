@@ -118,7 +118,7 @@ Page({
 //title, content, showCancel, confirmFun, cancelFun
     if (record < shots.length){
       var diff = shots.length - record
-      util.showWindow('朗读不完整', '您还差' + diff + '页未朗读，确定就这样上传吗？',true,function(){
+      util.showWindow('录音不完整', '您还差' + diff + '页未朗读，确定就这样上传吗？',true,function(){
         wx.showLoading({
           title: '上传中...',
           mask: true
@@ -380,7 +380,7 @@ Page({
 
     let showTip = wx.getStorageSync('recordTip')
     if (!showTip){
-      util.showWindow('语速设置提醒', '朗读语速可在 "首页->个人中心->设置->语速设置" 中进行设置', false, function(){}, function(){}) 
+      util.showWindow('语速设置提醒', '语速可在 "首页->个人中心->设置->语速设置" 中进行设置', false, function(){}, function(){}) 
       wx.setStorageSync('recordTip', 1)
     }
 
@@ -399,8 +399,12 @@ Page({
           if (res && res.code == 1) {
             let shots = res.data.shots.reverse()
             for (let ii in shots) {
-              if (!shots[ii].readTime) {
-                shots[ii]['readTime'] = 5
+              console.log(!shots[ii].readTime || res.data.book.type != 1)
+              if (!shots[ii].readTime || res.data.book.type!=1) {
+                //shots[ii]['readTime'] = 10
+              }
+              if (res.data.book.type == 2){
+                shots[ii]['readTime'] = 15
               }
             }
             that.setData(
@@ -409,6 +413,22 @@ Page({
                 shots: shots,
                 pageshow: true
               })
+
+            if (that.data.book.type == 1) {
+              that.setData({ typeDesc: '朗读' })
+            }
+            if (that.data.book.type == 2) {
+              that.setData({ typeDesc: '讲故事' })
+            }
+            if (that.data.book.type == 3) {
+              that.setData({ typeDesc: '解题' })
+            }
+            if (that.data.book.type == 4) {
+              that.setData({ typeDesc: '关心Ta' })
+            }
+            if (that.data.book.type == 5) {
+              that.setData({ typeDesc: '辩论' })
+            }
             that.preViewaudioListener()
           }
         })

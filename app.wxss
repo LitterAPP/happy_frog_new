@@ -268,3 +268,7 @@ text{
   height: 35px;
   width: 35px;
 }
+
+.hover-class{
+  background: #EBEBEB;
+}

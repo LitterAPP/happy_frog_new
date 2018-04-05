@@ -10,7 +10,7 @@ var ItemW
 var startX, startY, endX, endY
 var reflushUrl = app.globalData.host + '/Forg/listHotBooks'
 var jx = 0, hotOrLast = 0
-var currentBookId=0
+var currentBookId = 0
 
 var moveSprites = ['/images/forg-7.png', '/images/forg-5.png', '/images/gift-1.png', '/images/gift-2.png', '/images/gift-3.png', '/images/gift-4.png', '/images/gift-5.png', '/images/gift-6.png', '/images/gift-7.png', '/images/gift-8.png', '/images/gift-9.png', '/images/gift-10.png', '/images/gift-11.png', '/images/huaban-1.png', '/images/huaban-2.png']
 
@@ -23,15 +23,15 @@ Page({
   data: {
     hot: 1,
     borderColor: '#E6399B',
-    jx:1
-
+    jx: 1,
+    bar: 1
   },
   goCreate: function () {
     wx.redirectTo({
       url: '/pages/create/create',
     })
   },
-  goToRead:function(e){
+  goToRead: function (e) {
     var that = this
     util.GET(app.globalData.host + '/FormId/collect',
       {
@@ -113,23 +113,59 @@ Page({
       }, function () {
       })
   },
-  reflush: function () {
-    var that = this     
-    util.GET(app.globalData.host + '/Forg/listBooks',
+  goSendMoment: function (e) {
+    var that = this
+    util.GET(app.globalData.host + '/FormId/collect',
       {
         session: wx.getStorageSync('session'),
-        jx: jx,
+        appId: app.globalData.appid,
+        formId: e.detail.formId
+      }, function () { })
+    wx.redirectTo({
+      url: '/pages/create/moment',
+    })
+  },
+  barSelect: function (e) {
+    console.log('barSelect')
+    var that = this
+    util.GET(app.globalData.host + '/FormId/collect',
+      {
+        session: wx.getStorageSync('session'),
+        appId: app.globalData.appid,
+        formId: e.detail.formId
+      }, function () { })
+
+    let bar = e.currentTarget.dataset.bar
+   
+    if (bar == 1) {
+      page=1
+      that.reflush()
+    } else if (bar == 2) {
+      wx.redirectTo({
+        url: '/pages/moments/list',
+      })
+    }
+  },
+  reflush: function () {
+    var that = this
+    wx.showLoading({
+      title: '加载中...',
+    })
+    util.GET(app.globalData.host + '/Forg/listBooks_new',
+      {
+        session: wx.getStorageSync('session'),
         hotOrLast: hotOrLast,
         page: page,
+        recommend:1,
         pageSize: pageSize
       },
       function (res) {
-        wx.hideToast()
+        wx.hideLoading()
         if (res && res.code == 1) {
-          
-          var books = res.data
-          if (books.length<=0){
-            page=1
+
+          var books = res.data.list
+          if (books.length <= 0) {
+            page = 1
             that.reflush()
             return
           }
@@ -156,7 +192,7 @@ Page({
               W: W,
               H: H,
               ItemW: ItemW,
-              list: res.data,
+              list: books,
               currentAnimationId: 0,
               nothing: false,
               pageshow: true
@@ -191,21 +227,13 @@ Page({
     W = wx.getSystemInfoSync().windowWidth
     H = wx.getSystemInfoSync().screenHeight
     ItemW = W - 80
-    util.isApproved(function(isApproved){       
-      that.setData({ isApproved: isApproved})
+    util.isApproved(function (isApproved) {
+      that.setData({ isApproved: isApproved })
     })
-    
-    util.GET(app.globalData.host + '/ForgNewYear/isOpen',
-      {
-      }, function (res) {
-        if (res && res.code == 1) {
-          that.setData({ ForgNewYear: res.data })
-        }
-      })
 
-    util.checkLogin(false, function () { 
-      that.setData({ userinfo: wx.getStorageSync('userinfo')})
-      that.reflush() 
+    util.checkLogin(false, function () {
+      that.setData({ userinfo: wx.getStorageSync('userinfo') })
+      that.reflush()
     })
   },
   goToMySpace: function () {
@@ -213,7 +241,7 @@ Page({
       url: '/pages/myspace/index',
     })
   },
-  getTop3:function(){
+  getTop3: function () {
     var that = this
     util.GET(app.globalData.host + '/Forg/listRecord', {
       session: wx.getStorageSync('session'),
@@ -243,12 +271,12 @@ Page({
     backgroundMusic.playMusic(musicIndx)
   },
   */
-   
+
   moveItemStart: function (e) {
     if (!e || !e.changedTouches || !e.changedTouches[0]) return
     startX = e.changedTouches[0].pageX
     startY = e.changedTouches[0].pageY
-    console.log('moveItemStart-->', startX, startY) 
+    console.log('moveItemStart-->', startX, startY)
   },
   movingItem: function (e) {
     if (!e || !e.changedTouches) return
@@ -258,9 +286,9 @@ Page({
     let absX = Math.abs(endX - startX)
     let absY = Math.abs(endY - startY)
     let offset = Math.sqrt(absX * absX + absY * absY)
-    
+
     if (offset < 20) {
-      console.log('moveItem-->小于20，不运动,执行跳转', endX, endY)  
+      console.log('moveItem-->小于20，不运动,执行跳转', endX, endY)
       wx.navigateTo({
         url: '/pages/index/index?bookId=' + e.currentTarget.dataset.bookid,
       })
@@ -274,14 +302,14 @@ Page({
     var idx = e.currentTarget.dataset.idx
     var copyList = that.data.list
     var maxOffset = Math.sqrt(ItemW * ItemW + ItemW * ItemW)
-    let piancha = 40 
+    let piancha = 40
     console.log('move--->idx', idx, copyList.lenght)
     //currentBookIdz
-    if (idx != copyList.length-1){
-      currentBookId = copyList[idx+1].id
+    if (idx != copyList.length - 1) {
+      currentBookId = copyList[idx + 1].id
       that.getTop3()
     }
-    
+
     if (endX - startX > 0 && absY < piancha) {//正东
       console.log('正东')
       copyList[idx].X = W + maxOffset
@@ -320,13 +348,13 @@ Page({
 
     var that = this
     var idx = e.currentTarget.dataset.idx
-    if (idx == copyList.length-1) {
+    if (idx == copyList.length - 1) {
       page++
       that.reflush()
     }
   },
   moveItemEnd: function (e) {
-    
+
   },
 
   /**

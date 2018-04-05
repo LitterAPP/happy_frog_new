@@ -4,7 +4,7 @@
 
   <view  wx:else class='wrap-button-adv'  style='{{extStyle}}' >
     <image  mode='aspectFill' style='{{extImgStyle}}' src='{{buttonImage}}'></image>
-    <text>{{buttonText}}</text>
+    <text style='{{textStyle}}'>{{buttonText}}</text>
     <button form-type='{{formType}}' open-type='{{openType}}' ></button>
   </view>
 </form>
